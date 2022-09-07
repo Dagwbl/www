@@ -1,0 +1,27 @@
+<?php
+
+class ErrorCode
+{
+    //User
+    const USERNAME_CANNOT_NULL=001;
+    const PASSWORD_CANNOT_NULL=002;
+    const USERNAME_EXIST=003;
+    const REGISTER_FAIL=004;
+    const LOGIN_FAIL=005;
+    const USERNAME_OR_PASSWORD_ERROR=006;
+
+    //Article
+    const ARTICLE_TITLE_CANNOT_NULL = 101;
+    const ARTICLE_CONTENT_CANNOT_NULL=102;
+    const ARTICLE_CREATE_FAIL=103;
+    const ARTICLE_ID_CANNOT_NUL=104;
+    const ARTICLE_GET_FAIL=105;
+    const ARTICLE_NOT_EXISTS=106;
+
+    //Other
+    const PREMISSION_NOT_ALLOW=107;
+    const ARTICLE_EDIT_ERROR=108;
+    const DELETE_FAIL=109;
+    const NONE_ARTICLE=110;
+
+}

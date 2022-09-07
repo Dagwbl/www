@@ -1,0 +1,13 @@
+POST http://localhost:80/api/item
+Content-Type: application/x-www-form-urlencoded
+
+id=99&content=new-element
+
+### 数据插入测试
+# 数据插入测试，data表
+POST http://localhost:80//projects/learn/esp/api/data.php?action=insert
+Content-Type: application/x-www-form-urlencoded
+
+value=123&sensor=1&raw=origianal&verify=timestamp
+
+###

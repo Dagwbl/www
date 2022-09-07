@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Control</title>
+
+</head>
+<body>
+<h1>控制页面</h1>
+<p>开关编号由传感器编号和开关序号共同组成</p>
+<p>执行代码为0和1，0代表关闭，1代表开启</p>
+<hr>
+<form name="exeForm" action="control.php" onsubmit="return validateForm()" method="post">
+    开关编号: <input type="text" name="switchID">
+    <br>
+    执行代码: <input type="text" name="cmd">
+    <hr>
+    <input type="submit" value="执行">
+</form>
+
+<script>
+    function validateForm(){
+        const arg1 = document.forms["exeForm"]["switchID"].value;
+        if (arg1==null || arg1==""){
+            alert("开关编号必须填写");
+            return false;
+        }
+        const arg2 = document.forms["exeForm"]["cmd"].value;
+        if (arg2==null || arg2=="" ||arg2>1||arg2<0){
+            alert("执行代码必须填写，且只能为0和1");
+            return false;
+        }
+
+    }
+</script>
+</body>
+</html>
