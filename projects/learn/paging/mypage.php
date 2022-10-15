@@ -37,6 +37,9 @@
 <?php
 require_once '../config/db.php';
 require_once '../config/profile.php';
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Headers:content-type');
+header('Access-Control-Request-Method:GET,POST');
 
 echo "<h1>数据库分页测试</h1>";
 
