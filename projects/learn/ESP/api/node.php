@@ -10,7 +10,7 @@
 | 7    | testnode | 0          | 0              |
 | 8    | 435      | 0          | 0              |
  */
-
+// 设置头响应头
 header("Content-type:application/x-www-form-urlencoded");
 header("Access-Control-Allow-Origin:*");
 // 设计数据库
@@ -28,14 +28,15 @@ $sql = "";
 $res = array();
 if (isset($_GET['action'])){
     $action=$_GET['action'];
-    $coords=$_POST['coords'];
     //查询数据
     if ($action=='query'){
+        // 支持两种查询方式，一种是按页查询，另一种是具体的查询参数分别为p和coords
         if (isset($_GET['p'])){
             $page = $_GET['p'];
             $page_size = 20;
             $sql = "SELECT * FROM `esp`.node LIMIT " . ($page-1) * $page_size ." ,$page_size";
-        }else{
+        }elseif (isset($_POST['coords'])){
+            $coords=$_POST['coords'];
             $sql = "SELECT * FROM `esp`.node WHERE coords='$coords'";
         }
         $result = mysqli_query($_db,$sql);
@@ -48,14 +49,19 @@ if (isset($_GET['action'])){
     elseif ($action=='insert'){
 //        $data = $_POST['data'];
         var_dump($_POST);
-//        echo $_POST;
-        $value =$_POST['value'];
-        $unit = $_POST['unit'];
-        $sensor =$_POST['sensor'];
-        $raw =$_POST['raw'];
-        $verify =$_POST['verify'];
+        $coords =$_POST['coords'];
+        if (isset($_POST['optocouple'])){
+            $optocouple = $_POST['optocouple'];
+        }else{
+            $optocouple = 0;
+        }
 
-        $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+        if (isset($_POST['response_level'])){
+            $response_level =$_POST['response_level'];
+        }else{
+            $response_level = 0;
+        }
+        $sql = "INSERT INTO esp.node (coords, optocouple, response_level) VALUES ('$coords', '$optocouple','$response_level')";
         echo $sql;
         $result = mysqli_query($_db,$sql);
         if ($result){
@@ -65,14 +71,14 @@ if (isset($_GET['action'])){
             $res["message"]="insert failed";
         }
     }
-    // 删除数据
+    // 删除数据,由于未做处理，此处即使删除不存在的值也不会进行报错
     elseif ($action=='delete'){
-        $id = $_POST['id'];
-//        $data = $_POST['data'];
-        $sql = "DELETE FROM learn.page WHERE `id`='$id'";
+//        $id = $_POST['id'];
+        $coords = $_POST['coords'];
+        $sql = "DELETE FROM esp.node WHERE `coords`='$coords'";
         $result = mysqli_query($_db,$sql);
+        echo json_encode($result);
         if ($result==1){
-            echo "hahds";
             echo $result;
             $res["message"] = "delete successfully";
         }else{
@@ -84,8 +90,26 @@ if (isset($_GET['action'])){
     elseif ($action=='update'){
         #$id = $_POST['id'];
         $coords = $_POST['coords'];
-        $opt_status = $_POST['optocouple'];
-        $sql = "UPDATE `esp`.node SET optocouple=$opt_status WHERE `coords`='$coords'";
+        // 先把当前的记录查询出来
+        $sql = "select * from esp.node where coords='$coords'";
+        $result = mysqli_query($_db,$sql);
+        $oldParams = mysqli_fetch_assoc($result);
+        // 首先判断坐标是否存在，如果不存在则直接退出。
+        if (empty($oldParams)){
+            die("The coords($coords) doesn't exist.");
+        }
+        var_dump($oldParams);
+        $optocouple = $oldParams['optocouple'];
+        $response_level = $oldParams['response_level'];
+
+        // 再从请求信息中覆盖一遍就可以得到新的值了。
+        if (isset($_POST['optocouple'])){
+            $optocouple = $_POST['optocouple'];
+        }
+        if (isset($_POST['response_level'])){
+            $response_level = $_POST['response_level'];
+        }
+        $sql = "UPDATE `esp`.node SET optocouple='$optocouple',response_level='$response_level' WHERE `coords`='$coords'";
         echo $sql;
         $result = mysqli_query($_db,$sql);
         if ($result){

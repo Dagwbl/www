@@ -5,11 +5,11 @@
 | 737  | 17    |      | PMS7003-1 | 2022-09-01 11:38:34.0 | 424d01c0110180200110180209752ac08e01706009703ab  | L435T72191 |
 | 738  | 57    |      | PMS7003-1 | 2022-09-01 11:38:37.0 | 424d01c05605e06303904004f31e9fc009301204009705b3 | L435T74706 |
 | 739  | 78    |      | PMS7003-1 | 2022-09-01 11:38:39.0 | 424d01c07707e08104e05305c4665164c08b0b020097055a | L435T77447 |
-| 740  | 111   |      | PMS7003-1 | 2022-09-01 11:38:42.0 | 424d01c0a90b10b406f07507662791f470980c0202970693 | L435T80081 |
-*/
+| 740  | 111   |      | PMS7003-1 | 2022-09-01 11:38:42.0 | 424d01c0a90b10b406f07507662791f470980c0202970693 | L435T80081*/
 
-// 目前只适配了插入功能，其他功能勿用
-header("Content-type:application/x-www-form-urlencoded");
+// esp.data 数据表操作，为了数据安全和确保数据的真实性起见，不允许进行数据修改和删除，也没有实现相应的功能
+//header("Content-type:application/x-www-form-urlencoded");
+header("Content-type:application/json");
 header("Access-Control-Allow-Origin:*");
 // 设计数据库
 
@@ -22,7 +22,6 @@ $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);
 // 返回的数据对象
 //$opj_table =  "data";  //本文件主要操作esp.data表
 $sql = "";
-//$result = "";
 $res = array();
 if (isset($_GET['action'])){
     $action=$_GET['action'];
@@ -44,18 +43,39 @@ if (isset($_GET['action'])){
     }
     // 插入数据
     elseif ($action=='insert'){
-//        $data = $_POST['data'];
-//        var_dump($_POST);
-//        echo $_POST;
-        $value =$_POST['value'];
-        $unit = $_POST['unit'];
-        $sensor =$_POST['sensor'];
-        $raw =$_POST['raw'];
-        $verify =$_POST['verify'];
-
-        $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+        $data = json_decode(file_get_contents("php://input"),true) ;
+        var_dump($data);
+//        die("test");
+//        $value =$_POST['value'];
+//        $unit = $_POST['unit'];
+//        $sensor =$_POST['sensor'];
+//        $raw =$_POST['raw'];
+//        $verify =$_POST['verify'];
+        $result = '';
+//        echo count($data,0);
+        if (count($data,0)==1){
+            $value =$data['value'];
+            $unit = $data['unit'];
+            $sensor =$data['sensor'];
+            $raw =$data['raw'];
+            $verify =$data['verify'];
+            $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+            echo $sql;
+            $result = mysqli_query($_db,$sql);
+        }elseif(count($data,0)==2){
+            foreach ($data as $item){
+                $value =$item['value'];
+                $unit = $item['unit'];
+                $sensor =$item['sensor'];
+                $raw =$item['raw'];
+                $verify =$item['verify'];
+                $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+                echo $sql;
+                $result = mysqli_query($_db,$sql);
+            }
+        }
 //        echo $sql;
-        $result = mysqli_query($_db,$sql);
+//        $result = mysqli_query($_db,$sql);
         if ($result){
             $res["message"] = "insert successfully";
         }else{
@@ -63,11 +83,12 @@ if (isset($_GET['action'])){
             $res["message"]="insert failed";
         }
     }
-    // 删除数据
+    // 删除数据，为安全起见不允许从客户端删除数据
     elseif ($action=='delete'){
+        die("Not allow delete data");
         $id = $_POST['id'];
 //        $data = $_POST['data'];
-        $sql = "DELETE FROM learn.page WHERE `id`='$id'";
+        $sql = "DELETE FROM esp.data WHERE `id`='$id'";
         $result = mysqli_query($_db,$sql);
         if ($result){
             $res["message"] = "delete successfully";
@@ -76,20 +97,21 @@ if (isset($_GET['action'])){
             $res["message"]="delete failed";
         }
     }
-    // 更新数据
+    // 更新数据功能，为确保数据真实性，不允许修改数据
     elseif ($action=='update'){
-//        $id = $_POST['id'];
-//        $data = $_POST['data'];
+        die("Not allow modify data");
+        $id = $_POST['id'];
+        $data = $_POST['data'];
         $res["error"]=true;
         $res["message"]="Not allow modify data";
-//        $sql = "UPDATE `learn`.page SET `id`='$id',`data`='$data' WHERE `id`='$id'";
-//        $result = mysqli_query($_db,$sql);
-//        if ($result){
-//            $res["message"] = "update successfully";
-//        }else{
-//            $res["error"]=true;
-//            $res["message"]="update failed";
-//        }
+        $sql = "UPDATE `learn`.page SET `id`='$id',`data`='$data' WHERE `id`='$id'";
+        $result = mysqli_query($_db,$sql);
+        if ($result){
+            $res["message"] = "update successfully";
+        }else{
+            $res["error"]=true;
+            $res["message"]="update failed";
+        }
     }
 
 }
@@ -98,7 +120,6 @@ if (isset($_GET['action'])){
 mysqli_close($_db);
 
 echo json_encode($res);
-//echo "hah";
 die();
 
 

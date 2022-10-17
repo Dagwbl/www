@@ -1,5 +1,5 @@
 <?php
-// sensor表样式
+// parameter表样式
 /*
 | id   | node | model          | parameter   | upload |
 | ---- | ---- | -------------- | ----------- | ------ |
@@ -27,34 +27,36 @@ $sql = "";
 $res = array();
 if (isset($_GET['action'])){
     $action=$_GET['action'];
-    $coords=$_POST['coords'];
+    $model=$_POST['model'];
+    if (isset($_POST['node'])){
+        $node=$_POST['node'];
+    }
     //查询数据
     if ($action=='query'){
         if (isset($_GET['p'])){
             $page = $_GET['p'];
             $page_size = 20;
             $sql = "SELECT * FROM `$opj_db`.$opj_table LIMIT " . ($page-1) * $page_size ." ,$page_size";
+        }elseif($model=='all'){
+            $sql =             $sql = "SELECT * FROM `$opj_db`.$opj_table";
         }else{
-            $sql = "SELECT * FROM `$opj_db`.$opj_table WHERE coords='$coords'";
+            $sql = "SELECT * FROM `$opj_db`.$opj_table WHERE model='$model'";
         }
         $result = mysqli_query($_db,$sql);
         while ($row = mysqli_fetch_assoc($result)){
             $res[] = $row;
         }
-
     }
     // 插入数据
     elseif ($action=='insert'){
 //        $data = $_POST['data'];
         var_dump($_POST);
 //        echo $_POST;
-        $value =$_POST['value'];
-        $unit = $_POST['unit'];
-        $sensor =$_POST['sensor'];
-        $raw =$_POST['raw'];
-        $verify =$_POST['verify'];
-
-        $sql = "INSERT INTO $opj_db.$opj_table (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+        $node =$_POST['node'];
+        $model = $_POST['model'];
+        $parameter =$_POST['parameter'];
+        $upload =$_POST['upload'];
+        $sql = "INSERT INTO $opj_db.$opj_table (node, model, parameter, upload) VALUES ('$node', '$model','$parameter','$upload')";
         echo $sql;
         $result = mysqli_query($_db,$sql);
         if ($result){
@@ -66,14 +68,19 @@ if (isset($_GET['action'])){
     }
     // 删除数据
     elseif ($action=='delete'){
-        $id = $_POST['id'];
+        $model = $_POST['model'];
+        // 先把之前的记录查询出来
+        $sql = "select * from esp.sensor where model='$model'";
+        $result = mysqli_query($_db,$sql);
+        if (empty(mysqli_fetch_assoc($result))){
+            die("The model($model) doesn't exist");
+        };
 //        $data = $_POST['data'];
-        $sql = "DELETE FROM $opj_db.$opj_table WHERE `id`='$id'";
+        $sql = "DELETE FROM $opj_db.$opj_table WHERE `model`='$model'";
         $result = mysqli_query($_db,$sql);
         if ($result==1){
-            echo "hahds";
             echo $result;
-            $res["message"] = "delete successfully";
+            $res["message"] = "execute successfully";
         }else{
             $res["error"]=true;
             $res["message"]="delete failed";
@@ -81,10 +88,30 @@ if (isset($_GET['action'])){
     }
     // 更新数据
     elseif ($action=='update'){
-        #$id = $_POST['id'];
-        $coords = $_POST['coords'];
-        $opt_status = $_POST['optocouple'];
-        $sql = "UPDATE $opj_db.$opj_table SET optocouple=$opt_status WHERE `coords`='$coords'";
+        $model = $_POST['model'];
+        // 先把之前的记录查询出来
+        $sql = "select * from esp.sensor where model='$model'";
+        $result = mysqli_query($_db,$sql);
+        $oldParams = mysqli_fetch_assoc($result);
+        $node = $oldParams['node'];
+        $model=$oldParams['model'];
+        $parameter=$oldParams['parameter'];
+        $upload=$oldParams['upload'];
+        // 首先判断坐标是否存在，如果不存在则直接退出。
+        if (empty($oldParams)){
+            die("The model($model) doesn't exist.");
+        }
+        //再从上传上来的参数中读取数据并覆盖
+        if (isset($_POST['model'])){
+            $model = $_POST['model'];
+        }
+        if (isset($_POST['parameter'])){
+            $parameter =$_POST['parameter'];
+        }
+        if (isset($_POST['upload'])){
+            $upload =$_POST['upload'];
+        }
+        $sql = "UPDATE $opj_db.$opj_table SET node='$node',parameter='$parameter',upload='$upload' WHERE `model`='$model'";
         echo $sql;
         $result = mysqli_query($_db,$sql);
         if ($result){
@@ -101,7 +128,6 @@ if (isset($_GET['action'])){
 mysqli_close($_db);
 
 echo json_encode($res);
-//echo "hah";
 die();
 
 
