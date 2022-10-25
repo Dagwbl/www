@@ -1,7 +1,21 @@
 <?php
+
+/**
+ * @author Dagwbl
+ *
+ * 主函数
+    预响应逻辑需要好好想清楚然后再进行代码的编写
+    响应操作的核心是对数据库进行持续的动态操作
+    1.一个不间断运行的循环函数
+    2.数据持续进行监测
+    3.如果有数据发生异常则进入响应控制函数
+
+ */
+
+//设置header
 header("Content-type:application/x-www-form-urlencoded");
 header("Access-Control-Allow-Origin:*");
-// 设计数据库
+
 
 // 链接数据库
 require_once '../config/profile.php';
@@ -13,19 +27,30 @@ $_db = connectDatabase(HOST, USERNAME, PASSWORD, DBNAME);
 const FIRST_THRESHOLD = 70;
 const SECOND_THRESHOLD = 300;
 
-// 物端网络数组,用立体的数据结构查询应该更为方便，用二维数组嵌套
-//$nodes = array(
-//    array(
-//        array(1,3,5,7,9),
-//        array(2,4,6,8,10)
-//    ),
-//    array(
-//        array(1,3,5,7,9),
-//        array(2,4,6,8,10)
-//    )
-//);
-// 生成房间数组
-$generateArray = function (int $idx_floor, int $idx_room) {
+/**
+物端网络数组,用立体的数据结构查询应该更为方便，用二维数组嵌套
+$nodes = array(
+    array(
+        array(1,3,5,7,9),
+        array(2,4,6,8,10)
+    ),
+    array(
+        array(1,3,5,7,9),
+        array(2,4,6,8,10)
+    )
+);
+*/
+
+
+/**
+ * 生成房间数组
+ *
+ * @param int $idx_floor
+ * @param int $idx_room
+ * @return array
+ */
+function generateArray(int $idx_floor, int $idx_room): array
+{
     $nodes = array();
     for ($f = 1; $f <= $idx_floor; $f++) {
         for ($r = 1; $r <= $idx_room; $r++) {
@@ -39,23 +64,35 @@ $generateArray = function (int $idx_floor, int $idx_room) {
     return $nodes;
 };
 
-//监测查询函数 TODO 这里还没有处理好数据
-$monitor = function () use ($_db) {
 
-    // 从data中查询数据库
-    $sql = "select *,MAX(id) from data where sensor like 'thermocouple%' group by sensor;";
+/**
+ * 监测函数
+ *
+ * @return void
+ * @todo 这里还没有处理好数据
+ */
+function monitor(): void
+{
+    global $_db;
+    $sql = "select *,MAX(id) from data where sensor like 'thermocouple%' group by sensor"; // 从data中查询数据库
     //下面这条sql语句联合了三个表，可以获得所有的信息，包括传感器信息和物端节点信息
     $sql = "select *,MAX(d.id) from data d inner join sensor s on d.sensor = s.model inner join node n on s.node = n.id where d.sensor like 'thermocouple%' group by sensor";
     //上面这条查询语句比较消耗性能，常规查询语句，只需要查询温度值超过阈值的节点温度就好了,只能先查询再判断
-    $sql = "select * from ($sql) where value>70";
+    $sql = "select * from esp.data where value>70";
     $result = mysqli_query($_db, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         print_r($row);
     }
 };
 
-//计算函数，返回需要控制的房间位置坐标以及预响应等级
-$analysis = function (string $ignite_location, int $pre_level) {
+/**
+ * 计算函数，返回需要控制的房间的位置坐标以及预响应等级
+ * @param string $ignite_location
+ * @param int $pre_level
+ * @return array
+ */
+function analysis(string $ignite_location, int $pre_level): array
+{
     //设房间坐标为[i][j][k]，通过
     // 1 3 5
     // 2 4 6
@@ -79,17 +116,40 @@ $analysis = function (string $ignite_location, int $pre_level) {
 
     return $coords;
 };
-$analysis('f2r4c2', 1);
+analysis('f2r4c2', 1);
+
+
+/**
+ * 控制方法选择，暂时只设置常规方法
+ * @param string $method
+ * @return array
+ */
+function controlMethod(string $method='normal'):array
+{
+    global $_db;
+    if ($method=='normal'){
+        $control_vex = array();
+    }
+
+    return $control_vex;
+};
 
 //执行控制动作
 $execAction = function (int $ignite_location, $control_vex) {
     foreach ($control_vex as $offset) {
-
+    continue;
     }
 };
 
-//重置开关状态
-$reset_opt = function (int $flag = 0) use ($_db) {
+
+/**
+ * 重置光耦开关状态
+ * @param int $flag
+ * @return void
+ */
+function reset_opt(int $flag = 0):void
+{
+    global $_db;
     if ($flag) {
         $sql = "update esp.node n set n.optocouple=1 where n.optocouple is not null";
         $result = mysqli_query($_db, $sql);
@@ -102,25 +162,39 @@ $reset_opt = function (int $flag = 0) use ($_db) {
 
 };
 
-// 启动入口
-$run = function () use ($monitor, $generateArray) {
+
+/**
+ * 响应控制入口函数
+    1.获取异常数据相应的坐标
+    2.根据编号规则或者数据结构获取周围房间的数据
+    3.根据异常数据的响应等级进行分别控制(如何控制是关键)
+    4.控制同时生成报告和发送警报信息
+    5.结束
+ * @todo    防抖功能    自动执行（后台运行）
+ */
+function run(): void
+{
     // 预响应阈值设置
+    $nodes = generateArray(10, 10); //生成node数组
+    var_dump($nodes);
+    while (true){
+        sleep(3);
+        monitor();
+    }
+    // 防抖功能暂时不
+//    $anti_shake = 0;
+//    if ($monitor()) {
+//        $anti_shake += 1;
+//        if ($anti_shake == 2) {
+//            //执行控制
+//            $anti_shake = 0; //执行完毕继续开启防抖
+//        }
+//
+//    };
 
-    //链接数据库
-    $nodes = $generateArray(10, 10);
-    $anti_shake = 0;
-    if ($monitor()) {
-        $anti_shake += 1;
-        if ($anti_shake == 2) {
-            //执行控制
-
-            $anti_shake = 0; //执行完毕继续开启防抖
-        }
-
-    };
-//    var_dump($nodes);
 };
 
-$run();
-echo "</br>";
+// 启动
+run();
+
 
