@@ -22,11 +22,6 @@ require_once '../config/profile.php';
 require_once '../config/db.php';
 $_db = connectDatabase(HOST, USERNAME, PASSWORD, DBNAME);
 
-
-// 基础参数配置
-const FIRST_THRESHOLD = 70;
-const SECOND_THRESHOLD = 300;
-
 /**
 物端网络数组,用立体的数据结构查询应该更为方便，用二维数组嵌套
 $nodes = array(
@@ -70,6 +65,7 @@ function generateArray(int $idx_floor, int $idx_room): array
  *
  * @return void
  * @todo 这里还没有处理好数据
+ * @todo 查询函数有重新设计
  */
 function monitor(): void
 {
@@ -93,19 +89,21 @@ function monitor(): void
  */
 function analysis(string $ignite_location, int $pre_level): array
 {
-    //设房间坐标为[i][j][k]，通过
-    // 1 3 5
-    // 2 4 6
-    // 可以得到其与fnrm的中m的转化关系为，m = (k+1)(j+1)
-    // 上一步得到的房间号应为数据库里面的房间号，因此需要分别计算出i,j,k
-    // 2r4c2 通过正则表达式分解为如下数组
-    //    Array
-    //    (
-    //        [0] =>
-    //        [1] => 2
-    //        [2] => 4
-    //        [3] => 2
-    //     )
+    /**
+    设房间坐标为[i][j][k]，通过
+     1 3 5
+     2 4 6
+     可以得到其与fnrm的中m的转化关系为，m = (k+1)(j+1)
+     上一步得到的房间号应为数据库里面的房间号，因此需要分别计算出i,j,k
+     2r4c2 通过正则表达式分解为如下数组
+        Array
+        (
+            [0] =>
+            [1] => 2
+            [2] => 4
+            [3] => 2
+         )
+     */
     $chars = preg_split('/[frct]/', $ignite_location);
     $i = $chars[1];
     $j = $chars[2] % 2 ? 0 : 1;
@@ -174,24 +172,13 @@ function reset_opt(int $flag = 0):void
  */
 function run(): void
 {
-    // 预响应阈值设置
+
     $nodes = generateArray(10, 10); //生成node数组
     var_dump($nodes);
     while (true){
         sleep(3);
         monitor();
     }
-    // 防抖功能暂时不
-//    $anti_shake = 0;
-//    if ($monitor()) {
-//        $anti_shake += 1;
-//        if ($anti_shake == 2) {
-//            //执行控制
-//            $anti_shake = 0; //执行完毕继续开启防抖
-//        }
-//
-//    };
-
 };
 
 // 启动

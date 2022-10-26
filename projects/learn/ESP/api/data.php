@@ -15,17 +15,16 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods:GET, POST, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers:x-requested-with, Referer,content-type,token,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Accept-Language, Origin, Accept-Encoding");
 
-// 设计数据库
-
 // 链接数据库
 require_once '../config/profile.php';
 require_once '../config/db.php';
+require_once '../utils/tools.php';
+
 $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);
-//$_db->query("set data utf8");
+
 // 构建接口
 // 返回的数据对象
 //$opj_table =  "data";  //本文件主要操作esp.data表
-$sql = "";
 $res = array();
 if (isset($_GET['action'])){
     $action=$_GET['action'];
@@ -55,7 +54,6 @@ if (isset($_GET['action'])){
 //        $sensor =$_POST['sensor'];
 //        $raw =$_POST['raw'];
 //        $verify =$_POST['verify'];
-        $result = '';
 //------------------直接最外层的数据用列表来进行解析----------------------
         foreach ($data as $item) {
             $value = $item['value'];
@@ -66,6 +64,10 @@ if (isset($_GET['action'])){
             $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
             echo $sql;
             $result = mysqli_query($_db, $sql);
+            if ($unit=='℃'){
+                control($value,$sensor);
+
+            }
             if ($result) {
                 $res["message"] = "insert successfully";
             } else {
@@ -108,10 +110,12 @@ if (isset($_GET['action'])){
 
 }
 
-
-mysqli_close($_db);
-
 echo json_encode($res);
-die();
+// 关闭数据库链接,反复关闭可能会对性能有影响
+//mysqli_close($_db);
+//die();
+
+
+// todo 控制函数在 controlTest实现，后续代码需重构
 
 
