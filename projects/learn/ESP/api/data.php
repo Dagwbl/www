@@ -9,19 +9,22 @@
 
 // esp.data 数据表操作，为了数据安全和确保数据的真实性起见，不允许进行数据修改和删除，也没有实现相应的功能
 //header("Content-type:application/x-www-form-urlencoded");
+// 设置为application/json的头文件非常容易出现跨域问题，需要以下头文件
 header("Content-type:application/json");
-header("Access-Control-Allow-Origin:*");
-// 设计数据库
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods:GET, POST, OPTIONS, DELETE");
+header("Access-Control-Allow-Headers:x-requested-with, Referer,content-type,token,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Accept-Language, Origin, Accept-Encoding");
 
 // 链接数据库
 require_once '../config/profile.php';
 require_once '../config/db.php';
+require_once '../utils/tools.php';
+
 $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);
-//$_db->query("set data utf8");
+
 // 构建接口
 // 返回的数据对象
 //$opj_table =  "data";  //本文件主要操作esp.data表
-$sql = "";
 $res = array();
 if (isset($_GET['action'])){
     $action=$_GET['action'];
@@ -42,8 +45,8 @@ if (isset($_GET['action'])){
 
     }
     // 插入数据
-    elseif ($action=='insert'){
-        $data = json_decode(file_get_contents("php://input"),true) ;
+    elseif ($action=='insert') {
+        $data = json_decode(file_get_contents("php://input"), true);
         var_dump($data);
 //        die("test");
 //        $value =$_POST['value'];
@@ -51,75 +54,68 @@ if (isset($_GET['action'])){
 //        $sensor =$_POST['sensor'];
 //        $raw =$_POST['raw'];
 //        $verify =$_POST['verify'];
-        $result = '';
-//        echo count($data,0);
-        if (count($data,0)==1){
-            $value =$data['value'];
-            $unit = $data['unit'];
-            $sensor =$data['sensor'];
-            $raw =$data['raw'];
-            $verify =$data['verify'];
+//------------------直接最外层的数据用列表来进行解析----------------------
+        foreach ($data as $item) {
+            $value = $item['value'];
+            $unit = $item['unit'];
+            $sensor = $item['sensor'];
+            $raw = $item['raw'];
+            $verify = $item['verify'];
             $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
             echo $sql;
-            $result = mysqli_query($_db,$sql);
-        }elseif(count($data,0)==2){
-            foreach ($data as $item){
-                $value =$item['value'];
-                $unit = $item['unit'];
-                $sensor =$item['sensor'];
-                $raw =$item['raw'];
-                $verify =$item['verify'];
-                $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
-                echo $sql;
-                $result = mysqli_query($_db,$sql);
+            $result = mysqli_query($_db, $sql);
+            if ($unit=='℃'){
+                control($value,$sensor);
+
             }
-        }
-//        echo $sql;
-//        $result = mysqli_query($_db,$sql);
-        if ($result){
-            $res["message"] = "insert successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="insert failed";
+            if ($result) {
+                $res["message"] = "insert successfully";
+            } else {
+                $res["error"] = true;
+                $res["message"] = "insert failed";
+            }
         }
     }
     // 删除数据，为安全起见不允许从客户端删除数据
     elseif ($action=='delete'){
         die("Not allow delete data");
-        $id = $_POST['id'];
-//        $data = $_POST['data'];
-        $sql = "DELETE FROM esp.data WHERE `id`='$id'";
-        $result = mysqli_query($_db,$sql);
-        if ($result){
-            $res["message"] = "delete successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="delete failed";
-        }
+//        $id = $_POST['id'];
+////        $data = $_POST['data'];
+//        $sql = "DELETE FROM esp.data WHERE `id`='$id'";
+//        $result = mysqli_query($_db,$sql);
+//        if ($result){
+//            $res["message"] = "delete successfully";
+//        }
+//        else{
+//            $res["error"]=true;
+//            $res["message"]="delete failed";
+//        }
     }
     // 更新数据功能，为确保数据真实性，不允许修改数据
     elseif ($action=='update'){
         die("Not allow modify data");
-        $id = $_POST['id'];
-        $data = $_POST['data'];
-        $res["error"]=true;
-        $res["message"]="Not allow modify data";
-        $sql = "UPDATE `learn`.page SET `id`='$id',`data`='$data' WHERE `id`='$id'";
-        $result = mysqli_query($_db,$sql);
-        if ($result){
-            $res["message"] = "update successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="update failed";
-        }
+//        $id = $_POST['id'];
+//        $data = $_POST['data'];
+//        $res["error"]=true;
+//        $res["message"]="Not allow modify data";
+////        $sql = "UPDATE `esp`.data SET `id`='$id',`data`='$data' WHERE `id`='$id'";
+////        $result = mysqli_query($_db,$sql);
+//        if ($result){
+//            $res["message"] = "update successfully";
+//        }else{
+//            $res["error"]=true;
+//            $res["message"]="update failed";
+//        }
     }
 
 }
 
-
-mysqli_close($_db);
-
 echo json_encode($res);
-die();
+// 关闭数据库链接,反复关闭可能会对性能有影响
+//mysqli_close($_db);
+//die();
+
+
+// todo 控制函数在 controlTest实现，后续代码需重构
 
 
