@@ -16,6 +16,9 @@ header("Access-Control-Allow-Origin:*");
 // 链接数据库
 require_once '../config/profile.php';
 require_once '../config/db.php';
+require_once '../utils/log.php';
+$logger = new log();
+
 $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);
 //$_db->query("set data utf8");
 // 构建接口
@@ -53,12 +56,13 @@ if (isset($_GET['action'])){
         var_dump($_POST);
 //        echo $_POST;
         $node =$_POST['node'];
-        $model = $_POST['model'];
+//        $model = $_POST['model'];
         $parameter =$_POST['parameter'];
         $upload =$_POST['upload'];
         $sql = "INSERT INTO $opj_db.$opj_table (node, model, parameter, upload) VALUES ('$node', '$model','$parameter','$upload')";
         echo $sql;
         $result = mysqli_query($_db,$sql);
+        $logger::info("新增传感器",$model);
         if ($result){
             $res["message"] = "insert successfully";
         }else{
@@ -68,7 +72,7 @@ if (isset($_GET['action'])){
     }
     // 删除数据
     elseif ($action=='delete'){
-        $model = $_POST['model'];
+//        $model = $_POST['model'];
         // 先把之前的记录查询出来
         $sql = "select * from esp.sensor where model='$model'";
         $result = mysqli_query($_db,$sql);
@@ -78,6 +82,7 @@ if (isset($_GET['action'])){
 //        $data = $_POST['data'];
         $sql = "DELETE FROM $opj_db.$opj_table WHERE `model`='$model'";
         $result = mysqli_query($_db,$sql);
+        $logger::info("删除传感器",$model);
         if ($result==1){
             echo $result;
             $res["message"] = "execute successfully";
@@ -88,7 +93,7 @@ if (isset($_GET['action'])){
     }
     // 更新数据
     elseif ($action=='update'){
-        $model = $_POST['model'];
+//        $model = $_POST['model'];
         // 先把之前的记录查询出来
         $sql = "select * from esp.sensor where model='$model'";
         $result = mysqli_query($_db,$sql);
@@ -114,6 +119,7 @@ if (isset($_GET['action'])){
         $sql = "UPDATE $opj_db.$opj_table SET node='$node',parameter='$parameter',upload='$upload' WHERE `model`='$model'";
         echo $sql;
         $result = mysqli_query($_db,$sql);
+        $logger::info("更新传感器",$model);
         if ($result){
             $res["message"] = "update successfully";
         }else{

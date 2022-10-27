@@ -56,6 +56,7 @@ class log
 // event--level, details--data,
     private static function record($data, $level, $raw=null, $immediate = false): void
     {
+        $raw = var_export($raw,false);
 
         if (self::isRecord($level)) {
             $prefix = date("Y-m-d H:i:s") . " [$level] ";

@@ -21,6 +21,10 @@ header("Access-Control-Allow-Headers:x-requested-with, Referer,content-type,toke
 require_once '../config/profile.php';
 require_once '../config/db.php';
 require_once '../utils/tools.php';
+require_once '../utils/log.php';
+require_once '../utils/control.php';
+
+$logger = new log();
 
 // 链接数据库
 $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);
@@ -45,18 +49,11 @@ if (isset($_GET['action'])){
         while ($row = mysqli_fetch_assoc($result)){
             $res[] = $row;
         }
-
     }
     // 插入数据
     elseif ($action=='insert') {
         $data = json_decode(file_get_contents("php://input"), true);
         var_dump($data);
-//        die("test");
-//        $value =$_POST['value'];
-//        $unit = $_POST['unit'];
-//        $sensor =$_POST['sensor'];
-//        $raw =$_POST['raw'];
-//        $verify =$_POST['verify'];
 //------------------直接最外层的数据用列表来进行解析----------------------
         foreach ($data as $item) {
             $value = $item['value'];
@@ -68,8 +65,7 @@ if (isset($_GET['action'])){
             echo $sql;
             $result = mysqli_query($_db, $sql);
             if ($unit=='℃'){
-                control($value,$sensor);
-
+                $res['control']=control($value,$sensor);
             }
             if ($result) {
                 $res["message"] = "Insert successfully";
