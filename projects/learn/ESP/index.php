@@ -73,15 +73,15 @@
 </style>
 <body>
 <?php
-require_once './db.php';
-require_once './profile.php';
+require_once './config/db.php';
+require_once './config/profile.php';
 
 echo "<h1>MariaDB数据库浏览——传感器数据</h1>";
 
 echo "<div class='container'>";
 echo "<div class='left'>";
 echo "<div class='nav'>";
-    echo "<a  href='physical_role.php'>物端列表</a>";
+    echo "<a  href='../layout/component/node.html'>物端列表</a>";
 echo "</div>";
 echo "<div class='nav'>";
     echo "<a href='switches.php'>喷头状态</a>";

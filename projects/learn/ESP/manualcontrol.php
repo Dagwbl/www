@@ -1,6 +1,6 @@
 <?php
-require_once './db.php';
-require_once './profile.php';
+require_once './config/db.php';
+require_once './config/profile.php';
 
 
 

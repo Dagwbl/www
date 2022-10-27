@@ -1,7 +1,13 @@
 <?php
 
-//require_once './profile.php';
-
+/**
+ * 链接数据库
+ * @param string $host
+ * @param string $username
+ * @param string $password
+ * @param string $db
+ * @return mysqli
+ */
 function connectDatabase(string $host, string $username, string $password, string $db, ): mysqli
 {
     $conn = mysqli_connect($host, $username, $password, $db);
@@ -15,4 +21,6 @@ function connectDatabase(string $host, string $username, string $password, strin
     return $conn;
 }
 
-//connectDatabase(HOST, USERNAME, PASSWORD, DBNAME);
+if (realpath(__FILE__)==realpath($_SERVER['SCRIPT_FILENAME'])){
+    connectDatabase(HOST, USERNAME, PASSWORD, DBNAME);
+}

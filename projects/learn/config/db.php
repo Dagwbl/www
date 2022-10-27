@@ -1,6 +1,6 @@
 <?php
 
-//require_once './profile.php';
+//require_once './config/profile.php';
 
 function connectDatabase(string $host, string $username, string $password, string $db, ): mysqli
 {
