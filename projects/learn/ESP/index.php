@@ -59,32 +59,40 @@
     div.page form{
         display: inline;
     }
-
+    table {
+        border: 1px solid;
+        width: 100%;
+        cellspacing: 0;
+        align: center;
+    }
     tr td{
         text-align: center;
+        border: 1px solid;
     }
     tr{
         /*font-weight: bold;*/
+        border: 1px solid;
     }
     td{
         font-size: small;
+        /*border: 1px solid;*/
     }
 
 </style>
 <body>
 <?php
-require_once './db.php';
-require_once './profile.php';
+require_once './config/db.php';
+require_once './config/profile.php';
 
 echo "<h1>MariaDB数据库浏览——传感器数据</h1>";
 
 echo "<div class='container'>";
 echo "<div class='left'>";
 echo "<div class='nav'>";
-    echo "<a  href='physical_role.php'>物端列表</a>";
+    echo "<a  href='layout/component/node.html'>物端列表</a>";
 echo "</div>";
 echo "<div class='nav'>";
-    echo "<a href='switches.php'>喷头状态</a>";
+    echo "<a href='layout/component/sensor.html'>喷头状态</a>";
 echo "</div>";
 echo "<div class='nav'>";
     echo "<a href='manualcontrol.php'>手动控制</a>";
@@ -108,7 +116,7 @@ $page_size = 45;
 $sql = "SELECT * FROM `bak`.sensordata LIMIT " . ($page-1) * $page_size ." ,$page_size";
 echo "<div class='content'>";
 $result = mysqli_query($_db,$sql);
-echo "<table border='1' width='100%' cellspacing='0' align='center' >";
+echo "<table>";
 echo "<tr style='font-weight: bold;background-color: #313335;color: #f2f2f2'><td>id</td><td>data</td><td>sensor</td><td>temperature</td><td>humidity</td><td>probetime</td><td>verify</td></tr>";
 while ($row = mysqli_fetch_assoc($result)){
     echo "<tr>";

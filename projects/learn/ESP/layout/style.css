@@ -1,0 +1,55 @@
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: antiquewhite;
+}
+
+.banner {
+    height: 100px;
+    float: top;
+    background-color: #acb3b9;
+}
+
+.main {
+    display: flex;
+
+    height: 100%;
+    flex-basis: auto;
+    background-color: dodgerblue;
+}
+
+.side {
+    width: 200px;
+    background-color: coral;
+    float: left;
+    /*height: 100vh;*/
+
+}
+
+.presentation {
+    background-color: blueviolet;
+    flex: 1;
+    flex-shrink: initial;
+
+}
+
+.nav {
+    background-color: #acb3b9;
+}
+
+.content {
+    height: 100%;
+    width: 100%;
+    background-color: cadetblue;
+    /*flex: 1;*/
+}
