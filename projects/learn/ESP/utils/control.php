@@ -28,17 +28,17 @@ function control($temperature, $sensor): array
         // 三级预响应控制数据
         $response_level = 'THIRD';
         $control_vex = array(-10,-1,0,1,10);
-        $result['message'] = "The temperature $sensor reaches ".THIRD_THRESHOLD.". The third level pr-response has been started\n";
+        $result['message'] = "The temperature $sensor reaches ".THIRD_THRESHOLD.". The third level pr-response has been started.";
     }elseif ($temperature>SECOND_THRESHOLD){
         // 二级预响应控制数组
         $response_level = 'SECOND';
         $control_vex = array(-1,0,1);
-        $result['message'] = "The temperature $sensor reaches ".SECOND_THRESHOLD.". The second level pr-response has been started\n";
+        $result['message'] = "The temperature $sensor reaches ".SECOND_THRESHOLD.". The second level pr-response has been started.";
     }elseif ($temperature > FIRST_THRESHOLD){
         // 一级预响应控制数组
         $response_level = 'FIRST';
         $control_vex = array(0);
-        $result['message'] =  "The temperature $sensor reaches ".SECOND_THRESHOLD.". The first level pr-response has been started\n";
+        $result['message'] =  "The temperature $sensor reaches ".SECOND_THRESHOLD.". The first level pr-response has been started.";
     }else{
         $control_vex = array();
         $result['message'] = "Everything's fine, Continuous monitoring...";
@@ -59,10 +59,8 @@ function control($temperature, $sensor): array
             $result['action'][] = $nodeId;
 //        echo "$nodeId 已执行控制动作\n";
         }
-        $logger::warn("",$result);
+        $logger::warn(" $node 预响应启动",json_encode($result));
     }
-
-
 
     return $result;
 

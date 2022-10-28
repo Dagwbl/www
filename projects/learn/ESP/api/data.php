@@ -92,6 +92,5 @@ echo json_encode($res);
 //die();
 
 
-// todo 控制函数在 controlTest实现，后续代码需重构
 
 

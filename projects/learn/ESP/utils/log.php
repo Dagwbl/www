@@ -56,11 +56,13 @@ class log
 // event--level, details--data,
     private static function record($data, $level, $raw=null, $immediate = false): void
     {
-        $raw = var_export($raw,false);
+        echo $raw;
+//        $raw = var_export($raw,false);
 
         if (self::isRecord($level)) {
-            $prefix = date("Y-m-d H:i:s") . " [$level] ";
-            self::$log .= $prefix . var_export($data, true) . $raw . PHP_EOL;
+            $prefix = date("Y-m-d H:i:s ||") . " [$level] ||";
+//            self::$log .= $prefix . var_export($data, true) ."||". $raw . PHP_EOL;
+            self::$log .= $prefix . $data ."||". $raw . PHP_EOL;
             self::insertDB(date("Y-m-d H:i:s"),$data, $level, $raw);
             if (self::isWrite($immediate)) self::write();
         }
@@ -105,6 +107,5 @@ register_shutdown_function(function () {
 // 下面语句只在模块直接启动时生效
 if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
     log::error("测试","raw",true);
-    echo "halo";
 
 }

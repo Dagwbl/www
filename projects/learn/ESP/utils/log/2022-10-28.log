@@ -1,0 +1,12 @@
+2022-10-28 03:39:33 [warn] ''
+2022-10-28 03:42:47 [warn] 'The temperature testsensor-3 reaches 300. The second level pr-response has been started
+'
+2022-10-28 03:45:40 [warn] '预响应启动'
+2022-10-28 03:47:05 [error] '测试'
+2022-10-28 03:47:34 [error] '测试'raw
+2022-10-28 03:47:46 [error] '测试'raw
+2022-10-28 03:47:55 [warn] '预响应启动'{"message":"The temperature testsensor-3 reaches 300. The second level pr-response has been started\n","sensor":"testsensor-3","status":200,"ignite node":"f1r3","action":["f1r4","f1r5","f1r6"]}
+2022-10-28 03:51:13 [warn] '预响应启动'{"message":"The temperature testsensor-1 reaches 800. The third level pr-response has been started.","sensor":"testsensor-1","status":200,"ignite node":"f1r1","action":["f0r3","f1r2","f1r3","f1r4","f2r3"]}
+2022-10-28 03:52:56	 [warn] 	'预响应启动'	{"message":"The temperature testsensor-1 reaches 800. The third level pr-response has been started.","sensor":"testsensor-1","status":200,"ignite node":"f1r1","action":["f0r3","f1r2","f1r3","f1r4","f2r3"]}
+2022-10-28 03:54:54 || [warn] ||预响应启动||{"message":"The temperature testsensor-1 reaches 800. The third level pr-response has been started.","sensor":"testsensor-1","status":200,"ignite node":"f1r1","action":["f0r3","f1r2","f1r3","f1r4","f2r3"]}
+2022-10-28 03:56:46 || [warn] || f1r1 预响应启动||{"message":"The temperature testsensor-1 reaches 800. The third level pr-response has been started.","sensor":"testsensor-1","status":200,"ignite node":"f1r1","action":["f0r3","f1r2","f1r3","f1r4","f2r3"]}
