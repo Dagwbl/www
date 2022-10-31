@@ -8,7 +8,7 @@
  * @param string $db
  * @return mysqli
  */
-function connectDatabase(string $host, string $username, string $password, string $db, ): mysqli
+function connectDatabase(string $host, string $username, string $password, string $db): mysqli
 {
     $conn = mysqli_connect($host, $username, $password, $db);
     if (!$conn) {

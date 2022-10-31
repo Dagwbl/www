@@ -10,7 +10,10 @@
 | 5    | 7    | thermocouple-1 | temperature | 1      |
 */
 header("Content-type:application/x-www-form-urlencoded");
-header("Access-Control-Allow-Origin:*");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods:GET, POST, OPTIONS, DELETE");
+header("Access-Control-Allow-Headers:x-requested-with, Referer,content-type,token,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Accept-Language, Origin, Accept-Encoding");
+
 // 设计数据库
 
 // 链接数据库
