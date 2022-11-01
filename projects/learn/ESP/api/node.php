@@ -12,6 +12,8 @@
  */
 // 设置头响应头
 header("Content-type:application/x-www-form-urlencoded");
+header("Content-type:application/json");
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods:GET, POST, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers:x-requested-with, Referer,content-type,token,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Accept-Language, Origin, Accept-Encoding");
@@ -29,100 +31,101 @@ $opj_table =  "node";  //本文件主要操作esp.node表
 $sql = "";
 //$result = "";
 $res = array();
-if (isset($_GET['action'])){
-    $action=$_GET['action'];
-    //查询数据
-    if ($action=='query'){
-        // 支持两种查询方式，一种是按页查询，另一种是具体的查询参数分别为p和coords
-        if (isset($_GET['p'])){
-            $page = $_GET['p'];
-            $page_size = 20;
-            $sql = "SELECT * FROM `esp`.node LIMIT " . ($page-1) * $page_size ." ,$page_size";
-        }elseif (isset($_POST['coords'])){
-            $coords=$_POST['coords'];
-            $sql = "SELECT * FROM `esp`.node WHERE coords='$coords'";
-        }
-        $result = mysqli_query($_db,$sql);
-        while ($row = mysqli_fetch_assoc($result)){
-            $res[] = $row;
-        }
 
+// 获取参数
+$action = $_GET['action'] ?? 'query';
+$page = $_GET['p'] ?? -1;
+$pageSize = $_GET['pageSize'] ?? -1;
+$coords = $_GET['coords'] ?? 0;
+//查询数据
+if ($action=='query'){
+    // 支持两种查询方式，一种是按页查询，另一种是具体的查询参数分别为p和coords
+    if ($page<>-1 && $pageSize <> -1){
+        // 查询分页
+        $sql = "SELECT * FROM `esp`.node LIMIT " . ($page-1) * $pageSize ." ,$pageSize";
+        $total = mysqli_fetch_assoc(mysqli_query($_db,"SELECT count(1) total FROM `esp`.node"));
+        $res['total'] = $total['total'];
+        $res['pageNum'] = $page;
+        $res['pageSize'] = $pageSize;
+    }elseif ($coords){
+        // 坐标查询
+        $sql = "SELECT * FROM `esp`.node WHERE coords='$coords'";
+    }else{
+        //查询全部
+        $sql = "SELECT * total FROM `esp`.node";
     }
-    // 插入数据
-    elseif ($action=='insert'){
-//        $data = $_POST['data'];
-        var_dump($_POST);
-        $coords =$_POST['coords'];
-        if (isset($_POST['optocouple'])){
-            $optocouple = $_POST['optocouple'];
-        }else{
-            $optocouple = 0;
-        }
+    $result = mysqli_query($_db,$sql);
+    $row = mysqli_fetch_all($result,mode: MYSQLI_ASSOC);
+    $res['data'] = $row;
 
-        if (isset($_POST['response_level'])){
-            $response_level =$_POST['response_level'];
-        }else{
-            $response_level = 0;
-        }
-        $sql = "INSERT INTO esp.node (coords, optocouple, response_level) VALUES ('$coords', '$optocouple','$response_level')";
-        echo $sql;
-        $result = mysqli_query($_db,$sql);
-        if ($result){
-            $res["message"] = "insert successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="insert failed";
-        }
-    }
-    // 删除数据,由于未做处理，此处即使删除不存在的值也不会进行报错
-    elseif ($action=='delete'){
-//        $id = $_POST['id'];
-        $coords = $_POST['coords'];
-        $sql = "DELETE FROM esp.node WHERE `coords`='$coords'";
-        $result = mysqli_query($_db,$sql);
-        echo json_encode($result);
-        if ($result==1){
-            echo $result;
-            $res["message"] = "delete successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="delete failed";
-        }
-    }
-    // 更新数据
-    elseif ($action=='update'){
-        #$id = $_POST['id'];
-        $coords = $_POST['coords'];
-        // 先把当前的记录查询出来
-        $sql = "select * from esp.node where coords='$coords'";
-        $result = mysqli_query($_db,$sql);
-        $oldParams = mysqli_fetch_assoc($result);
-        // 首先判断坐标是否存在，如果不存在则直接退出。
-        if (empty($oldParams)){
-            die("The coords($coords) doesn't exist.");
-        }
-        var_dump($oldParams);
-        $optocouple = $oldParams['optocouple'];
-        $response_level = $oldParams['response_level'];
 
-        // 再从请求信息中覆盖一遍就可以得到新的值了。
-        if (isset($_POST['optocouple'])){
-            $optocouple = $_POST['optocouple'];
-        }
-        if (isset($_POST['response_level'])){
-            $response_level = $_POST['response_level'];
-        }
-        $sql = "UPDATE `esp`.node SET optocouple='$optocouple',response_level='$response_level' WHERE `coords`='$coords'";
-        echo $sql;
-        $result = mysqli_query($_db,$sql);
-        if ($result){
-            $res["message"] = "update successfully";
-        }else{
-            $res["error"]=true;
-            $res["message"]="update failed";
-        }
-    }
+}
+// 插入数据
+elseif ($action=='insert'){
+    $data = json_decode(file_get_contents("php://input"), true);
+//    var_dump($data);
+    $coords =$data['coords'];
+    $optocouple =$data['optocouple'] ?? 0;
+    $response_level =$data['response_level'] ?? 0;
 
+    $sql = "INSERT INTO esp.node (coords, optocouple, response_level) VALUES ('$coords', '$optocouple','$response_level')";
+    echo $sql;
+    $result = mysqli_query($_db,$sql);
+    if ($result){
+        $res["message"] = "insert successfully";
+    }else{
+        $res["error"]=true;
+        $res["message"]="insert failed";
+    }
+}
+// 删除数据,由于未做处理，此处即使删除不存在的值也不会进行报错
+elseif ($action=='delete'){
+    $data = json_decode(file_get_contents("php://input"), true);
+//    var_dump($data);
+    $coords =$data['coords'];
+    $optocouple =$data['optocouple'] ?? 0;
+    $response_level =$data['response_level'] ?? 0;
+
+    $sql = "DELETE FROM esp.node WHERE `coords`='$coords'";
+    $result = mysqli_query($_db,$sql);
+    if ($result==1){
+//        echo $result;
+        $res["message"] = "delete successfully";
+    }else{
+        $res["error"]=true;
+        $res["message"]="delete failed";
+    }
+}
+// 更新数据
+elseif ($action=='update'){
+    $data = json_decode(file_get_contents("php://input"), true);
+    var_dump($data);
+    $coords =$data['coords'];
+    $optocouple =$data['optocouple'] ?? 0;
+    $response_level =$data['response_level'] ?? 0;
+
+    // 先把当前的记录查询出来
+    $sql = "select * from esp.node where coords='$coords'";
+    $result = mysqli_query($_db,$sql);
+    $oldParams = mysqli_fetch_assoc($result);
+    // 首先判断坐标是否存在，如果不存在则直接退出。
+    if (empty($oldParams)){
+        die("The coords($coords) doesn't exist.");
+    }
+//    var_dump($oldParams);
+//    $optocouple = $oldParams['optocouple'];
+//    $response_level = $oldParams['response_level'];
+
+    // 再从请求信息中覆盖一遍就可以得到新的值了。
+    $sql = "UPDATE `esp`.node SET optocouple='$optocouple',response_level='$response_level' WHERE `coords`='$coords'";
+    echo $sql;
+    $result = mysqli_query($_db,$sql);
+    if ($result){
+        $res["message"] = "update successfully";
+    }else{
+        $res["error"]=true;
+        $res["message"]="update failed";
+    }
 }
 
 
