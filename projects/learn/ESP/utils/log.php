@@ -56,7 +56,7 @@ class log
 // event--level, details--data,
     private static function record($data, $level, $raw=null, $immediate = false): void
     {
-        echo $raw;
+//        echo $raw;
 //        $raw = var_export($raw,false);
 
         if (self::isRecord($level)) {

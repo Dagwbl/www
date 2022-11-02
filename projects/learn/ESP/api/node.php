@@ -112,11 +112,7 @@ elseif ($action=='update'){
     if (empty($oldParams)){
         die("The coords($coords) doesn't exist.");
     }
-//    var_dump($oldParams);
-//    $optocouple = $oldParams['optocouple'];
-//    $response_level = $oldParams['response_level'];
 
-    // 再从请求信息中覆盖一遍就可以得到新的值了。
     $sql = "UPDATE `esp`.node SET optocouple='$optocouple',response_level='$response_level' WHERE `coords`='$coords'";
     echo $sql;
     $result = mysqli_query($_db,$sql);
@@ -132,7 +128,6 @@ elseif ($action=='update'){
 mysqli_close($_db);
 
 echo json_encode($res);
-//echo "hah";
 die();
 
 
