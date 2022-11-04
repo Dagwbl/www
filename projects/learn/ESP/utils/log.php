@@ -18,7 +18,7 @@ class log
     //是否每次都写文件
     const WRITE_IMMEDIATE = false;
     //文件写日志级别
-    const RECORD_LEVEL = 'info';
+    const RECORD_LEVEL = 'debug';
     //日志文件目录
     const DIR = __DIR__ . '/log/';
 
@@ -78,6 +78,7 @@ class log
         global $_db;
         $sql = "insert into esp.log (time, event, details,raw) VALUES ('$time','$level','$data','$raw')";
         $res = mysqli_query($_db,$sql);
+        echo  "已插入";
 
     }
 
