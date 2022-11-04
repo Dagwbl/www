@@ -4,7 +4,8 @@
 require_once '../config/profile.php';
 require_once '../config/db.php';
 require_once '../utils/tools.php';
-require_once 'log.php';
+require_once '../utils/log.php'; // 存在同名文件需要相对路径定位回父级目录再定位回来
+
 
 
 $_db = connectDatabase(HOST,USERNAME,PASSWORD,DBNAME);

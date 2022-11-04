@@ -77,7 +77,7 @@ class log
     {
         global $_db;
         $sql = "insert into esp.log (time, event, details,raw) VALUES ('$time','$level','$data','$raw')";
-        mysqli_query($_db,$sql);
+        $res = mysqli_query($_db,$sql);
 
     }
 

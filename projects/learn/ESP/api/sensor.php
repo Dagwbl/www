@@ -63,11 +63,12 @@ if ($action == 'query') {
 elseif ($action == 'insert') {
     // json 数据，多个对象，用列表封装[{},{}]
     $allData = json_decode(file_get_contents("php://input"), true);
+    var_dump($allData);
     foreach ($allData as $data) {
         $node = $data['node'];
         $model = $data['model'];
-        $parameter = $data['parameter'];
-        $upload = $data['upload'];
+        $parameter = $data['parameter'] ?? null;
+        $upload = $data['upload'] ?? 1;
         $sql = "INSERT INTO $opj_db.$opj_table (node, model, parameter, upload) VALUES ('$node', '$model','$parameter','$upload')";
 //        echo $sql;
         try {

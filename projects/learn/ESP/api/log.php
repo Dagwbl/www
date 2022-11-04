@@ -19,6 +19,10 @@ $res['result']=mysqli_fetch_all($result,mode: MYSQLI_ASSOC);
 $res['message']='Execute successfully';
 $res['error'] = false;
 
+// 下面语句只在模块直接启动时生效
+if (realpath(__FILE__)==realpath($_SERVER['SCRIPT_FILENAME'])){
+    echo json_encode($res);
+}
 
-echo json_encode($res);
+
 
