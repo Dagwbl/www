@@ -18,10 +18,10 @@ $table = $_GET['table'] ?? null;
 $page = $_GET['p'] ?? 1;
 $pageSize = $_GET['pageSize'] ?? 15;
 $filter = $_GET['filter'] ?? null;
-$time = $_GET['date'] ?? null;
+$time = $_GET['date']  ?? null;
 
 //var_dump($_GET);
-
+//echo $time;
 //$allData = json_decode(file_get_contents("php://input"), true);
 //var_dump($allData);
 
@@ -38,11 +38,11 @@ foreach ($banKeywords as $keyword) {
 if ($isAllow) {
     if ($table) {
         if ($filter && $time) {
-            $filter = 'where ' . $filter . ",time like '$time%";
+            $filter = 'where ' . $filter . ",time like '$time%'";
         } elseif ($filter && !$time) {
             $filter = 'where ' . $filter;
         } elseif (!$filter && $time) {
-            $filter = 'where ' . "time like '$time%";
+            $filter = 'where ' . "time like '$time%'";
         } else {
             $filter = '';
         }
