@@ -36,11 +36,11 @@ function addSensor(): void
     for ($f = 1; $f <= 12; $f++) {
         for ($r = 1; $r <= 10; $r++) {
             $coords = "f" . "$f" . "r" . "$r";
-            $model = 'testsensor-' . "$i";
-            $old_model = 'testsensor' . "$i";
+            $model = $coords.'-thermocouple-' . "1";
+            $old_model = 'testsensor-' . "$i";
             $i++;
-//            $sql = "insert into esp.sensor (node, model, parameter, unit, `range`) VALUES ('$coords','$model','temperature','℃','0-1000')";
-            $sql = "update esp.sensor set model='$model' where model='$old_model'";
+            $sql = "insert into esp.sensor (node, model, parameter, unit, `range`) VALUES ('$coords','$model','temperature','℃','0-1000')";
+//            $sql = "update esp.sensor set model='$model' where model='$old_model'";
             try {
                 $result = mysqli_query($_db, $sql);
             } catch (Exception $e) {
@@ -80,7 +80,8 @@ function addData(): void
 //addNode();
 //addSensor();
 try {
-    addData();
+//    addData();
+    addSensor();
 } catch (Exception $e) {
     echo $e;
 }

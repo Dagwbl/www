@@ -52,7 +52,7 @@ if ($action=='query'){
         $sql = "SELECT * FROM `esp`.node WHERE coords='$coords'";
     }else{
         //查询全部
-        $sql = "SELECT * total FROM `esp`.node";
+        $sql = "SELECT * FROM `esp`.node";
     }
     $result = mysqli_query($_db,$sql);
     $row = mysqli_fetch_all($result,mode: MYSQLI_ASSOC);
@@ -64,25 +64,28 @@ if ($action=='query'){
 elseif ($action=='insert'){
     $data = json_decode(file_get_contents("php://input"), true);
 //    var_dump($data);
-    $coords =$data['coords'];
+    $coords =$data['coords'] ?? null;
     $optocouple =$data['optocouple'] ?? 0;
     $response_level =$data['response_level'] ?? 0;
 
     $sql = "INSERT INTO esp.node (coords, optocouple, response_level) VALUES ('$coords', '$optocouple','$response_level')";
-    echo $sql;
-    $result = mysqli_query($_db,$sql);
-    if ($result){
+//    echo $sql;
+    $res['sql'] = $sql;
+    try {
+        $result = mysqli_query($_db,$sql);
         $res["message"] = "insert successfully";
-    }else{
-        $res["error"]=true;
+    }catch (Exception $e){
+        $res['error'] = $e->getMessage();
+//        $res["error"]=true;
         $res["message"]="insert failed";
     }
+
 }
 // 删除数据,由于未做处理，此处即使删除不存在的值也不会进行报错
 elseif ($action=='delete'){
     $data = json_decode(file_get_contents("php://input"), true);
 //    var_dump($data);
-    $coords =$data['coords'];
+    $coords =$data['coords'] ?? null;
     $optocouple =$data['optocouple'] ?? 0;
     $response_level =$data['response_level'] ?? 0;
 
@@ -99,7 +102,7 @@ elseif ($action=='delete'){
 // 更新数据
 elseif ($action=='update'){
     $data = json_decode(file_get_contents("php://input"), true);
-    var_dump($data);
+//    var_dump($data);
     $coords =$data['coords'];
     $optocouple =$data['optocouple'] ?? 0;
     $response_level =$data['response_level'] ?? 0;
@@ -114,9 +117,11 @@ elseif ($action=='update'){
     }
 
     $sql = "UPDATE `esp`.node SET optocouple='$optocouple',response_level='$response_level' WHERE `coords`='$coords'";
-    echo $sql;
+//    echo $sql;
     $result = mysqli_query($_db,$sql);
     if ($result){
+        $res['sql']=$sql;
+        $res['updated'] = $data;
         $res["message"] = "update successfully";
     }else{
         $res["error"]=true;

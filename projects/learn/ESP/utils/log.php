@@ -18,7 +18,7 @@ class log
     //是否每次都写文件
     const WRITE_IMMEDIATE = false;
     //文件写日志级别
-    const RECORD_LEVEL = 'debug';
+    const RECORD_LEVEL = 'warn';
     //日志文件目录
     const DIR = __DIR__ . '/log/';
 
@@ -76,9 +76,12 @@ class log
     private static function insertDB($time,$data, $level, $raw=null): void
     {
         global $_db;
+        global $res;
         $sql = "insert into esp.log (time, event, details,raw) VALUES ('$time','$level','$data','$raw')";
-        $res = mysqli_query($_db,$sql);
-        echo  "已插入";
+//        echo $sql;
+        $result = mysqli_query($_db,$sql);
+        $res['log'] = "日志已插入数据库";
+//        echo json_encode($res);
 
     }
 

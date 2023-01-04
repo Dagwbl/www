@@ -32,12 +32,11 @@ $_db = connectDatabase(HOST, USERNAME, PASSWORD, DBNAME);
 // 构建接口
 // 返回的数据对象
 //$opj_table =  "data";  //本文件主要操作esp.data表
-$res = array();
 $action = $_GET['action'] ?? 'query';
 
 //查询数据
 if ($action == 'query') {
-    $model = $_GET['model'] ?? null;
+    $model = $_GET['model'] ?? '';
     $node = $_GET['node'] ?? null;
     $page = $_GET['p'] ?? 1;
     $pageSize = $_GET['pageSize'] ?? 20;
@@ -65,14 +64,15 @@ if ($action == 'query') {
         $res['status'] = 'error';
         $res['total'] = $total['total'];
         $res['message'] = "查询数据过多，请提供参数查询";
-        die(var_export($res, false));
+        die(json_encode($res));
     }
     $result = mysqli_query($_db, $sql);
     $res['data'] = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);
 } // 插入数据
 elseif ($action == 'insert') {
     $data = json_decode(file_get_contents("php://input"), true);
-    var_dump($data);
+//    var_dump($data);
+//    var_dump($_POST);
 //------------------直接最外层的数据用列表来进行解析----------------------
     foreach ($data as $item) {
         $value = $item['value'];
@@ -80,14 +80,20 @@ elseif ($action == 'insert') {
         $sensor = $item['sensor'];
         $raw = $item['raw'];
         $verify = $item['verify'];
-        $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify')";
+        $seq = EXPERIMENT_SEQ;
+        // 处理热电偶没有连接导致的数据异常
+        if ($value=='1023.75'){
+            $value='-23';
+        }
+        $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify, seq) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify', '$seq')";
 //        echo $sql;
         $result = mysqli_query($_db, $sql);
-        if ($unit == '℃') {
+        if ($unit == '℃' || $unit == 'Celsius') {
             $res['control'] = control($value, $sensor);
         }
         if ($result) {
             $res["message"] = "Insert successfully";
+            $res['code'] = 200;
         } else {
             $res["error"] = true;
             $res["message"] = "Insert failed";
@@ -95,10 +101,14 @@ elseif ($action == 'insert') {
     }
 } // 删除数据，为安全起见不允许从客户端删除数据
 elseif ($action == 'delete') {
-    die("Not allow delete data");
+    $res['code'] = 400;
+    $res['message'] = "Not allow delete data";
+//    die("Not allow delete data");
 } // 更新数据功能，为确保数据真实性，不允许修改数据
 elseif ($action == 'update') {
-    die("Not allow modify data");
+    $res['code'] = 400;
+    $res['message'] = "Not allow modify data";
+//    die("Not allow modify data");
 }
 
 
