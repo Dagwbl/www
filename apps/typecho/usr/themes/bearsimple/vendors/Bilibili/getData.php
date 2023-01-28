@@ -1,25 +1,32 @@
 <?php
+/**
+ * 
+ * B站数据获取
+ * Template:Bearsimple
+ * Date:2022/01/11
+ * 
+**/
 header("HTTP/1.1 200 OK");
     header("Access-Control-Allow-Origin: *");
     date_default_timezone_set('PRC');
 error_reporting(0);
 function getData(){
     //验证传值
-if ($_GET['type'] !== 'acg')
+if ($_POST['type'] !== 'acg')
 {
     $result = array('code'=> '-1','message'=>'The pass-through value is wrong.');
 echo json_encode($result); 
 exit;
 } 
 //验证传值
-if (is_numeric($_GET['page']) == false)
+if (is_numeric($_POST['page']) == false)
 {
 $result = array('code'=> '-1','message'=>'The pass-through value is wrong.');
 echo json_encode($result); 
 exit;
 } 
-$options = Typecho_Widget::widget('Widget_Options');
-$str = $options->bilibili_accountid;
+$options = bsOptions::getInstance()::get_option( 'bearsimple' );
+$str = $options['bilibili_accountid'];
     $status = json_decode(file_get_contents('https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$str.'&type=1&follow_status=0&pn=1&ps=6'),true);
 $max = ceil($status['data']['total'] / 6);
 $total = $status['data']['total'];
@@ -28,11 +35,11 @@ $result = array(
     'max' => $max,
     'list' => array()
 );
-if(empty($_GET['page'])){
+if(empty($_POST['page'])){
     $i = 1;
 }
 else{
-    $i = $_GET['page']; 
+    $i = $_POST['page']; 
 }
                 $info = json_decode(file_get_contents('https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$str.'&type=1&follow_status=0&pn='.$i.'&ps=6'),true);
                 foreach ($info['data']['list'] as $data) {

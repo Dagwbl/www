@@ -1,5 +1,4 @@
-//Google Translate Website Tools
-function googleTranslateElementInit2() {console.log('load')
+function googleTranslateElementInit2() {
     new google.translate.TranslateElement({
         pageLanguage: 'auto',
         autoDisplay: false
@@ -99,7 +98,7 @@ String.prototype.escNone=function(){
     return this.toString()
 };
 
-var strHtml='<link rel="stylesheet" href="//deliver.application.pub/gh/whitebearcode/Translate/translate.css" type="text/css" /><script type="text/javascript" src="//deliver.application.pub/gh/whitebearcode/translate_bearsimple/element_latest.js?cb=googleTranslateElementInit2"></script>';
+var strHtml='<link rel="stylesheet" href="//resources.typecho.co.uk/translate/translate.css" type="text/css" /><script type="text/javascript" src="//resources.typecho.co.uk/translate/element_latest.js?cb=googleTranslateElementInit2" async></script>';
 document.write(strHtml.escNone());
 var Words ="";
 function OutWord()

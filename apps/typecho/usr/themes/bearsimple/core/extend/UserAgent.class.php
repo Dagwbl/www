@@ -4,7 +4,7 @@ class BearsimpleUserAgent
 {
     public static function render($agent,$ctype = 'time')
     {
-        $options = Typecho_Widget::widget('Widget_Options');
+        $options = bsOptions::getInstance()::get_option( 'bearsimple' );
         global $url_img;
         $url_img = "//deliver.application.pub/gh/whitebearcode/UserAgent/img";
 
@@ -33,10 +33,10 @@ class BearsimpleUserAgent
             $code = 'chrome';
         }
        if($ctype == 'comment'){
-        $img = "<img style='vertical-align: middle;' src='" . $url_img  . $type . $code . ".png' title='" . $title . "' alt='" . $title . "' height='14' width='14' />";
+        $img = "<img style='vertical-align: middle;' src='" . $url_img  . $type . $code . ".png' title='" . $title . "' alt='" . $title . "' height='15' width='15' />";
 }
 else{
-    $img = "<img src='" . $url_img  . $type . $code . ".png' title='" . $title . "' alt='" . $title . "' height='18' width='18' />";
+    $img = "<img style='vertical-align: middle;' src='" . $url_img  . $type . $code . ".png' title='" . $title . "' alt='" . $title . "' height='15' width='15' />";
 }
         return $img;
     }

@@ -359,22 +359,22 @@ $("#typecho-option-item-Entermaxlengths-112").hide();
 //代码高亮
 $(document).ready(function(){
  $("#typecho-option-item-Editor-115").hide();
-$('#Codehightlight-0-116').change(function(){
+$('#Codehightlight-0-117').change(function(){
 var a13=$(this).children('option:selected').val();
 
 if(a13=='1'){
-$("#typecho-option-item-code_style-116").show();
-$("#typecho-option-item-showLineNumber-117").show();
+$("#typecho-option-item-code_style-117").show();
+$("#typecho-option-item-showLineNumber-118").show();
 }
 else{
-$("#typecho-option-item-code_style-116").hide();
-$("#typecho-option-item-showLineNumber-117").hide();
+$("#typecho-option-item-code_style-117").hide();
+$("#typecho-option-item-showLineNumber-118").hide();
 }
 })
-var options13=$("#Codehightlight-0-116 option:selected").val();
+var options13=$("#Codehightlight-0-117 option:selected").val();
 if(options13 !== '1'){
-$("#typecho-option-item-code_style-116").hide();
-$("#typecho-option-item-showLineNumber-117").hide();
+$("#typecho-option-item-code_style-117").hide();
+$("#typecho-option-item-showLineNumber-118").hide();
 }
 })
 
@@ -415,24 +415,6 @@ $("#typecho-option-item-Reward_style-155").hide();
 })
 
 
-//区块
-//右侧标签云
-$(document).ready(function(){
-$('#tagcloud-0-145').change(function(){
-var a22=$(this).children('option:selected').val();
-
-if(a22=='1'){
-$("#typecho-option-item-tagcloudnum-145").show();
-}
-else{
-$("#typecho-option-item-tagcloudnum-145").hide();
-}
-})
-var options22=$("#tagcloud-0-145 option:selected").val();
-if(options22 !== '1'){
-$("#typecho-option-item-tagcloudnum-145").hide();
-}
-})
 
 //区块
 //右侧最近文章
@@ -450,6 +432,25 @@ $("#typecho-option-item-LastArticleNumber-61").hide();
 var options16=$("#LastArticle-0-61 option:selected").val();
 if(options16 !== '1'){
 $("#typecho-option-item-LastArticleNumber-61").hide();
+}
+})
+
+//区块
+//右侧标签云
+$(document).ready(function(){
+$('#tagcloud-0-151').change(function(){
+var a22=$(this).children('option:selected').val();
+
+if(a22=='1'){
+$("#typecho-option-item-tagcloudnum-151").show();
+}
+else{
+$("#typecho-option-item-tagcloudnum-151").hide();
+}
+})
+var options22=$("#tagcloud-0-151 option:selected").val();
+if(options22 !== '1'){
+$("#typecho-option-item-tagcloudnum-151").hide();
 }
 })
 
@@ -690,46 +691,46 @@ $("#typecho-option-item-AdControl4Src-70").hide();
 //图片
 //水印设置
 $(document).ready(function(){
-$('#Watermark-0-127').change(function(){
+$('#Watermark-0-133').change(function(){
 var a18=$(this).children('option:selected').val();
 
 if(a18=='1'){
-$("#typecho-option-item-WatermarkType-127").show();
-$("#typecho-option-item-waterMarkName-128").show();
-$("#typecho-option-item-waterMarkKd-129").show();
-$("#typecho-option-item-waterMarkTextSize-130").show();
-$("#typecho-option-item-waterMarkTextColor-131").show();
-$("#typecho-option-item-waterMarkTextBackground-132").show();
-$("#typecho-option-item-waterMarkLocation-133").show();
-$("#typecho-option-item-waterMarkOpacity-134").show();
-$("#typecho-option-item-waterMarkMargin-135").show();
-$("#typecho-option-item-waterMarkOutput-136").show();
+$("#typecho-option-item-WatermarkType-133").show();
+$("#typecho-option-item-waterMarkName-134").show();
+$("#typecho-option-item-waterMarkKd-138").show();
+$("#typecho-option-item-waterMarkTextSize-136").show();
+$("#typecho-option-item-waterMarkTextColor-137").show();
+$("#typecho-option-item-waterMarkTextBackground-138").show();
+$("#typecho-option-item-waterMarkLocation-139").show();
+$("#typecho-option-item-waterMarkOpacity-140").show();
+$("#typecho-option-item-waterMarkMargin-141").show();
+$("#typecho-option-item-waterMarkOutput-142").show();
 }
 else{
-$("#typecho-option-item-WatermarkType-127").hide();
-$("#typecho-option-item-waterMarkName-128").hide();
-$("#typecho-option-item-waterMarkKd-129").hide();
-$("#typecho-option-item-waterMarkTextSize-130").hide();
-$("#typecho-option-item-waterMarkTextColor-131").hide();
-$("#typecho-option-item-waterMarkTextBackground-132").hide();
-$("#typecho-option-item-waterMarkLocation-133").hide();
-$("#typecho-option-item-waterMarkOpacity-134").hide();
-$("#typecho-option-item-waterMarkMargin-135").hide();
-$("#typecho-option-item-waterMarkOutput-136").hide();
+$("#typecho-option-item-WatermarkType-133").hide();
+$("#typecho-option-item-waterMarkName-134").hide();
+$("#typecho-option-item-waterMarkKd-135").hide();
+$("#typecho-option-item-waterMarkTextSize-136").hide();
+$("#typecho-option-item-waterMarkTextColor-137").hide();
+$("#typecho-option-item-waterMarkTextBackground-138").hide();
+$("#typecho-option-item-waterMarkLocation-139").hide();
+$("#typecho-option-item-waterMarkOpacity-140").hide();
+$("#typecho-option-item-waterMarkMargin-141").hide();
+$("#typecho-option-item-waterMarkOutput-142").hide();
 }
 })
-var options18=$("#Watermark-0-127 option:selected").val();
+var options18=$("#Watermark-0-133 option:selected").val();
 if(options18 !== '1'){
-$("#typecho-option-item-WatermarkType-127").hide();
-$("#typecho-option-item-waterMarkName-128").hide();
-$("#typecho-option-item-waterMarkKd-129").hide();
-$("#typecho-option-item-waterMarkTextSize-130").hide();
-$("#typecho-option-item-waterMarkTextColor-131").hide();
-$("#typecho-option-item-waterMarkTextBackground-132").hide();
-$("#typecho-option-item-waterMarkLocation-133").hide();
-$("#typecho-option-item-waterMarkOpacity-134").hide();
-$("#typecho-option-item-waterMarkMargin-135").hide();
-$("#typecho-option-item-waterMarkOutput-136").hide();
+$("#typecho-option-item-WatermarkType-133").hide();
+$("#typecho-option-item-waterMarkName-134").hide();
+$("#typecho-option-item-waterMarkKd-135").hide();
+$("#typecho-option-item-waterMarkTextSize-136").hide();
+$("#typecho-option-item-waterMarkTextColor-137").hide();
+$("#typecho-option-item-waterMarkTextBackground-138").hide();
+$("#typecho-option-item-waterMarkLocation-139").hide();
+$("#typecho-option-item-waterMarkOpacity-140").hide();
+$("#typecho-option-item-waterMarkMargin-141").hide();
+$("#typecho-option-item-waterMarkOutput-142").hide();
 }
 })
 
@@ -764,19 +765,19 @@ $("#typecho-option-item-music_musicList-125").hide();
 
 //编辑器
 $(document).ready(function(){
-$('#editor-0-148').change(function(){
+$('#Editors-0-122').change(function(){
 var a21=$(this).children('option:selected').val();
 
-if(a21=='2'){
-$("#typecho-option-item-EditorsAutosave-148").show();
+if(a21=='1'){
+$("#typecho-option-item-EditorsAutosave-153").show();
 }
 else{
-$("#typecho-option-item-EditorsAutosave-148").hide();
+$("#typecho-option-item-EditorsAutosave-153").hide();
 }
 })
-var options21=$("#editor-0-148 option:selected").val();
-if(options21 !== '2'){
-$("#typecho-option-item-EditorsAutosave-148").hide();
+var options21=$("#Editors-0-122 option:selected").val();
+if(options21 !== '1'){
+$("#typecho-option-item-EditorsAutosave-153").hide();
 }
 })
 

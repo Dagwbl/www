@@ -1,19 +1,41 @@
 <?php
-$options = Helper::options();
+$options = bsOptions::getInstance()::get_option( 'bearsimple' );
 require_once('general.php');
 require_once('assetsdir.php');
+require_once('codehightlight.php');
 require_once('compresshtml.php');
-require_once('getversion.php');
 require_once('getcheck.php');
 require_once('gravatar.php');
+require_once('replyview.php');
 require_once('spam.php');
 require_once('tongji.php');
 require_once('parse.php');
 require_once('extend/UserAgent.class.php');
+require_once('extend/Comments.php');
 
-
+function get_hito(){
+ $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, 'https://v1.hitokoto.cn/');
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+    curl_setopt($curl, CURLOPT_POST, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    $data = curl_exec($curl);
+    curl_close($curl);
+    $datas = json_decode($data,true);
+    return $datas['hitokoto'];
+}
+function get_friendlink(){
+     $db = \Typecho\Db::get();
+         $links = $db->fetchAll($db->select()->from('table.bscore_friendlinks')->where('status = ?', 'approved'));
+         if(empty($links)){
+             $links = NULL ;
+         }
+ return $links;
+}
 function billboard($ads,$type){
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option('bearsimple');
     $str = explode("|",$ads);
     $target = parselink($str[1]);
     if($type == 'sidebar'){
@@ -29,13 +51,11 @@ function billboard($ads,$type){
 }
 if($type == 'other'){
      echo '
-    <a href="'.$str[1].'" '.$target.'>
-    <div class="image">
-      <img style="display: inline-block; width: 100%; max-width: 100%; height: auto;border-radius:10px" src="';echo $str[0].'">
-       
-    </div>
+     <div class="bs_ads_cont">
+    <a  href="'.$str[1].'" '.$target.'>
+      <img class="bs_ads_img ui fluid image" src="'.$str[0].'">
   </a>
-
+  </div>
     ';
 }
 }
@@ -61,204 +81,221 @@ function parseMultilineData($str, $columnCount)
         return $result;
     }
 
-function parseMultilineDataForPage($str, $columnCount)
-    {
-        $result = array();
-        if (!empty($str)) {
-            $data = explode(",", $str);
-            foreach ($data as $item) {
-                $item = trim($item);
-                if (!empty($item)) {
-                    $itemData = explode('#', $item, $columnCount);
-                    if (count($itemData) == $columnCount) {
-                        foreach ($itemData as $k => $v) {
-                            $itemData[$k] = trim($v);
-                        }
-                        $result[] = $itemData;
-                    }
-                }
-            }
-        }
-        return $result;
-    }
-    
 function getMenu()
     {
-    $options = Helper::options();
-        return parseMultilineData($options->Menu, 2);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+        return parseMultilineData($options['Menu'], 2);
     }
 
 function getLink()
     {
-    $options = Helper::options();
-        return parseMultilineData($options->WebLink, 2);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+        return parseMultilineData($options['WebLink'], 2);
     }
 
+function announmentget(){
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $announment = explode('|',$options['PopupText']);
+    return $announment;
+}
+
 function sliderget(){
-    $options = Helper::options();
-    return parseMultilineData($options->SliderPics, 2);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    return parseMultilineData($options['SliderPics'], 3);
 }
 
 function getFriendLink()
     {
-    $options = Helper::options();
-        return parseMultilineData($options->FriendLink, 3);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+        return parseMultilineData($options['FriendLink'], 3);
     }
     
 function getDoubanId($id)
     {
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
     $DoubanId = explode(',',$id);
         return $DoubanId;
-    }
-
-function getDoubanIds($id)
-    {
-    $options = Helper::options();
-    if(parseMultilineDataForPage($id, 2) == null){
-        $res = explode(',',$id);
-        $array = array('rating'=> 'false');
-    }
-    else{
-         $res = parseMultilineDataForPage($id, 2);
-         $array = array('rating'=> 'true');
-    }
-     return array($res,$array);
     }
     
 function getBookTag()
     {
-    $options = Helper::options();
-    $DoubanTag = explode(',',$options->douban_tag);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $DoubanTag = explode(',',$options['douban_tag']);
         return $DoubanTag;
     }
-    
+
 function getMovieTag()
     {
-    $options = Helper::options();
-    $DoubanTag = explode(',',$options->douban_movie_tag);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $DoubanTag = explode(',',$options['douban_movie_tag']);
         return $DoubanTag;
     }
 
 function getMusicTag()
     {
-    $options = Helper::options();
-    $DoubanTag = explode(',',$options->douban_music_tag);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $DoubanTag = explode(',',$options['douban_music_tag']);
         return $DoubanTag;
+    }
+    
+function curl_func($url){
+$ch = curl_init ();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+curl_setopt($ch, CURLOPT_HEADER, FALSE);
+curl_setopt($ch, CURLOPT_NOBODY, FALSE);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+curl_exec($ch);
+$httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+return $httpCode;
     }
 //主题开启后的设定
 
 function themeInit($self){
-    if ($self->hidden){$self->response->setStatus(200);}
+
+    if ($self->hidden){
+    $self->response->setStatus(200);
+header('HTTP/1.1 200 OK');
+    }
+    $options1 = bsOptions::getInstance()::get_option( 'bearsimple' );
     $options = Helper::options();
-    if ($options->VerifyChoose == '1'){
+    if ($options1['VerifyChoose'] == '1'){
 $comment = spam_protection_prejia($self, $post, $result);
 }
-else if ($options->VerifyChoose == '11'){
+else if ($options1['VerifyChoose'] == '11'){
 $comment = spam_protection_prejian($self, $post, $result);
 }
 else{
 $comment = spam_protection_prejia($self, $post, $result);
 }
-$options->commentsOrder = 'DESC';
-Helper::options()->commentsAntiSpam = false;
-//Helper::options()->commentsMaxNestingLevels = 999;
-if($options->Pjax == '1'){
-Helper::options()->commentsCheckReferer = false;
+if($options1['infinite_scroll'] == true){
+$self->parameter->pageSize = $options1['infinite_pageSize'];
 }
-         if (Helper::options()->SiteMap && Helper::options()->SiteMap !== 'close') {
+$options->commentsOrder = 'DESC';
+$options->commentsAntiSpam = false;
+if($options1['Pjax'] == true){
+$options->commentsCheckReferer = false;
+}
+//bsOptions::getInstance()::get_option( 'bearsimple' )->commentsMaxNestingLevels = 999;
+
+            
+    //Sitemap
+         if (bsOptions::getInstance()::get_option( 'bearsimple' )['SiteMap'] && bsOptions::getInstance()::get_option( 'bearsimple' )['SiteMap'] !== 'close') {
         if (strpos($_SERVER['REQUEST_URI'], 'sitemap.xml') !== false) {
+
     $self->response->setStatus(200);
         $self->setThemeFile("modules/SiteMap/sitemap.php");
-        }
+    }
 }
+if (strpos($_SERVER['REQUEST_URI'], 'searchcross') !== false) {
 
-        //图片剪裁BearThumb
-        if (strpos($_SERVER['REQUEST_URI'], 'bearthumb') !== false) {
+    $self->response->setStatus(200);
+        $self->setThemeFile("core/widget/searchcross.php");
+    }
+         //用户中心
+ if (strpos($_SERVER['REQUEST_URI'], 'usercenter') !== false) {
             $self->response->setStatus(200);
-            $self->setThemeFile("modules/BearThumb/thumb.php");
+            $self->setThemeFile("modules/UserCenter/user.php");
         }
+  
         //追番获取
         if (strpos($_SERVER['REQUEST_URI'], 'getacg') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("vendors/Bilibili/getData.php");
         }
-               //豆瓣获取
+         //追番获取
+        if (strpos($_SERVER['REQUEST_URI'], 'bs-pagecontent') !== false) {
+            $self->response->setStatus(200);
+            $self->setThemeFile("core/widget/pageContent.php");
+        }
+        //豆瓣获取
         if (strpos($_SERVER['REQUEST_URI'], 'getdouban') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("vendors/Douban/getData.php");
-        } 
- if (strpos($_SERVER['REQUEST_URI'], 'usercenter') !== false) {
-            $self->response->setStatus(200);
-            $self->setThemeFile("modules/UserCenter/user.php");
         }
-     
-     if (strpos($_SERVER['REQUEST_URI'], 'write') !== false) {
+        //编辑器附件插入
+        if (strpos($_SERVER['REQUEST_URI'], 'write') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("core/widget/write.php");
-        
-        }
-                    //上传图片API
-        if (strpos($_SERVER['REQUEST_URI'], 'uploadimages') !== false) {
+}
+if($_SERVER['REQUEST_METHOD'] === 'POST' && strpos($_SERVER['REQUEST_URI'], 'bs-pagecontent') == false && strpos($_SERVER['REQUEST_URI'], 'getacg') == false && strpos($_SERVER['REQUEST_URI'], 'getdouban') == false && strpos($_SERVER['REQUEST_URI'], 'write') == false && strpos($_SERVER['REQUEST_URI'], 'uploadimages') == false && strpos($_SERVER['REQUEST_URI'], 'upgrade') == false && strpos($_SERVER['REQUEST_URI'], 'bsfrienddata') == false && strpos($_SERVER['REQUEST_URI'], 'bsfriendaction') == false && strpos($_SERVER['REQUEST_URI'], 'jsonapi/getarticle') == false && strpos($_SERVER['REQUEST_URI'], 'bsoptions/ajax') == false && strpos($_SERVER['REQUEST_URI'], 'commentlike') == false && strpos($_SERVER['REQUEST_URI'], 'postlike') == false && strpos($_SERVER['REQUEST_URI'], 'getgithub') == false && strpos($_SERVER['REQUEST_URI'], 'friendajax') == false){
             $self->response->setStatus(200);
+            $self->setThemeFile("core/widget/getLoginAction.php");
+}
+                //上传图片API
+        if (strpos($_SERVER['REQUEST_URI'], 'uploadimages') !== false) {
+           $self->response->setStatus(200);
             $self->setThemeFile("upload/upload_img.php");
         }
         //升级API
-        if (strpos($_SERVER['REQUEST_URI'], 'upgrade') !== false) {
+        if (strpos($_SERVER['REQUEST_URI'], 'bs-upgrade') !== false) {
             $self->response->setStatus(200);
-            $self->setThemeFile("vendors/Upgrade/Upgrade.php");
+            $self->setThemeFile("modules/Upgrade/Upgrade.php");
         }
-    //获取文章数据
+      
+//获取友链数据
+        if (strpos($_SERVER['REQUEST_URI'], 'bsfrienddata') !== false) {
+            $self->response->setStatus(200);
+            $self->setThemeFile("core/widget/friendlinkData.php");
+        }
+//友链数据操作
+        if (strpos($_SERVER['REQUEST_URI'], 'bsfriendaction') !== false) {
+            $self->response->setStatus(200);
+            $self->setThemeFile("core/widget/friendlinkAction.php");
+        }
+        
+//获取文章数据
         if (strpos($_SERVER['REQUEST_URI'], 'jsonapi/getarticle') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("core/widget/getarticle.php");
         }
-        //评论点赞
+//评论点赞
         if (strpos($_SERVER['REQUEST_URI'], 'commentlike') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("core/widget/commentlike.php");
         }
-        //文章点赞
+//文章点赞
         if (strpos($_SERVER['REQUEST_URI'], 'postlike') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("core/widget/postlike.php");
         }
-        //获取Github仓库
+        
+//获取Github仓库
         if (strpos($_SERVER['REQUEST_URI'], 'getgithub') !== false) {
             $self->response->setStatus(200);
             $self->setThemeFile("core/widget/getgithub.php");
         }
-$all = \Typecho\Plugin::export();
-$str_place = Helper::options()->pluginUrl.'/BsCore/191.version';
-
-if (!array_key_exists('BsCore', $all['activated']) || !file_exists($str_place)){
-$file = str_replace('core','',dirname(__FILE__)).'/vendors/Plugin/BsCore.zip';
-$newFile= str_replace('themes/bearsimple/core','',dirname(__FILE__)).'/plugins/BsCore.zip';
-copy($file,$newFile);
-$zip=new ZipArchive;
-if($zip->open(str_replace('themes/bearsimple/core','',dirname(__FILE__)).'/plugins/BsCore.zip')===TRUE){ 
-  $zip->extractTo(str_replace('themes/bearsimple/core','',dirname(__FILE__)).'/plugins/');
-  $zip->close();
-}
-}
-
+        //提交友链
+        if (strpos($_SERVER['REQUEST_URI'], 'friendajax') !== false) {
+            $self->response->setStatus(200);
+            $self->setThemeFile("core/widget/friendlink.php");
+        }
 //实验室-外链转内链
 $tempStr = str_replace("/index.php","",$_SERVER['REQUEST_URI']);
 
     $action = substr($tempStr,1,2 );
     if( $action == "go" ){
-        $self->response->setStatus(200);
+
+            $self->response->setStatus(200);
         $urlArr = include_once str_replace('core','',dirname(__FILE__)).'modules/url.php';
         $query = trim(substr($tempStr,4),"/");
+        
         foreach($urlArr as $key=>$value){$arr[]=$key;}
         if(in_array($query,$arr)){
             header("Location: ".$urlArr[$query]);
         }
+        
     }
+    
 }
 
+
 function page_fetch(String $type, Array $ids, Int $page = 1, Int $limit = 6 , String $cachetype){
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
     $cache_name = '';
    if($type=='movie'){
         $cache_name = 'movie_';
@@ -284,44 +321,44 @@ function page_fetch(String $type, Array $ids, Int $page = 1, Int $limit = 6 , St
     $stars = [];
         switch($type){
      case 'movie':
-         $rating_ch = $options->douban_movie_rating;
+         $rating_ch = $options['douban_movie_rating'];
        switch($cachetype){
           case '1':
-              $cachetypenr = $options->douban_movie1;
+              $cachetypenr = $options['douban_movie1'];
               break;
           case '2':
-              $cachetypenr = $options->douban_movie2;
+              $cachetypenr = $options['douban_movie2'];
               break;
           case '3':
-              $cachetypenr = $options->douban_movie3;
+              $cachetypenr = $options['douban_movie3'];
               break;
        }
          break;
      case 'book':
-         $rating_ch = $options->douban_rating;
+         $rating_ch = $options['douban_rating'];
                 switch($cachetype){
           case '1':
-              $cachetypenr = $options->douban_book1;
+              $cachetypenr = $options['douban_book1'];
               break;
           case '2':
-              $cachetypenr = $options->douban_book2;
+              $cachetypenr = $options['douban_book2'];
               break;
           case '3':
-              $cachetypenr = $options->douban_book3;
+              $cachetypenr = $options['douban_book3'];
               break;
        }
          break;
      case 'music':
-         $rating_ch = $options->douban_music_rating;
+         $rating_ch = $options['douban_music_rating'];
                 switch($cachetype){
           case '1':
-              $cachetypenr = $options->douban_music1;
+              $cachetypenr = $options['douban_music1'];
               break;
           case '2':
-              $cachetypenr = $options->douban_music2;
+              $cachetypenr = $options['douban_music2'];
               break;
           case '3':
-              $cachetypenr = $options->douban_music3;
+              $cachetypenr = $options['douban_music3'];
               break;
        }
          break;
@@ -341,7 +378,7 @@ function page_fetch(String $type, Array $ids, Int $page = 1, Int $limit = 6 , St
     $cache_file = $cache_dir . $cache_name;
     $cache_file2 = $cache_dir . $cache_name2;
     if(file_exists($cache_file) && filectime($cache_file) + (5 * 24 * 3600) >= time() && $cachetypenr == @file_get_contents($cache_file2)){
-        // 5天缓存
+        // 5天时间
         $result = json_decode(@file_get_contents($cache_file), true);
     }else{
         unlink($cache_file2);
@@ -398,7 +435,7 @@ function page_fetch(String $type, Array $ids, Int $page = 1, Int $limit = 6 , St
     return $results;
 }
 function douban_getdata($id,$type){
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
     $Apikey = array('apikey'=>'0df993c66c0c636e29ecbb5344252a4a');
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, 'https://api.douban.com/v2/'.$type.'/'.$id);
@@ -425,6 +462,7 @@ $result['url'] = $datas['alt'];
     $result['moviename'] = $datas['title'];
     $result['summary'] = $datas['alt_title'];
     $result['episode'] = !empty($datas['attrs']['episodes'])?(is_array($datas['attrs']['episodes'])?$datas['attrs']['episodes'][0]:$datas['attrs']['episodes']):1;
+    // var_dump($datas);exit;
     $result['movie_duration'] = !empty($datas['attrs']['movie_duration'])?$datas['attrs']['movie_duration'][0]:'120';
     break;
     case 'music':
@@ -443,15 +481,21 @@ $result['url'] = $datas['alt'];
 }
 
 function bilibili_getpage(){
-    $options = Helper::options();
-    $status = json_decode(file_get_contents('https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$options->bilibili_accountid.'&type=1&follow_status=0&pn=1&ps=15'),true);
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $status = json_decode(file_get_contents('https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$options['bilibili_accountid'].'&type=1&follow_status=0&pn=1&ps=15'),true);
     return $status['data']['total'];
 }
 
+function bilibili_getlist(){
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $status = json_decode(file_get_contents('https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$options['bilibili_accountid'].'&type=1&follow_status=0&pn=1&ps=15'),true);
+    return $status['data']['list'];
+}
+
 function bilibili_getdata($i){
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, 'https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$options->bilibili_accountid.'&type=1&follow_status=0&pn='.$i.'&ps=15');
+    curl_setopt($curl, CURLOPT_URL, 'https://api.bilibili.com/x/space/bangumi/follow/list?vmid='.$options['bilibili_accountid'].'&type=1&follow_status=0&pn='.$i.'&ps=15');
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_TIMEOUT, 500);
     curl_setopt($curl, CURLOPT_POST, false);
@@ -462,6 +506,7 @@ function bilibili_getdata($i){
     $datas = json_decode($data,true);
     return $datas;
 }
+
 
 function cut_str($sourcestr,$cutlength){
 $returnstr='';
@@ -537,6 +582,9 @@ function getCommentHF($coid){
 
 function themeFields(Typecho_Widget_Helper_Layout $layout)
 {
+    $Bsoptions = new Typecho_Widget_Helper_Form_Element_Select('ArticleType', array('common_Mode' => '普通文章模式',  'pic_Mode' => '图片模式'),' common_Mode', '选择文章内容展现模式', '普通文章模式会显示所有内容，而图片模式则不显示除图片以外的其他内容。');
+    $layout->addItem($Bsoptions->multiMode());
+    
     $cover = new Typecho_Widget_Helper_Form_Element_Text('cover', null, null, '文章封面', '输入文章封面图片直链');
     $layout->addItem($cover);
     
@@ -587,3 +635,5 @@ function themeFields(Typecho_Widget_Helper_Layout $layout)
     $layout->addItem($Poster->multiMode());
     
 }
+
+

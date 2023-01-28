@@ -80,6 +80,8 @@ elseif ($action == 'insert') {
         $sensor = $item['sensor'];
         $raw = $item['raw'];
         $verify = $item['verify'];
+        $coords = explode('-', $sensor)[0];
+//        echo $coords;
         $seq = EXPERIMENT_SEQ;
         // 处理热电偶没有连接导致的数据异常
         if ($value=='1023.75'){
@@ -88,8 +90,8 @@ elseif ($action == 'insert') {
         $sql = "INSERT INTO esp.data (value, unit, sensor, time, `raw`, verify, seq) VALUES ($value, '$unit','$sensor', DEFAULT, '$raw', '$verify', '$seq')";
 //        echo $sql;
         $result = mysqli_query($_db, $sql);
-        if ($unit == '℃' || $unit == 'Celsius') {
-            $res['control'] = control($value, $sensor);
+        if ($unit == '℃' || $unit == 'Celsius' && $value>30 && SPRAY_FLAG) {
+            $res['control'] = control($value, $sensor, $coords);
         }
         if ($result) {
             $res["message"] = "Insert successfully";

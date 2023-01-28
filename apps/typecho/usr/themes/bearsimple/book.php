@@ -6,7 +6,7 @@
     */
 ?>
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
-<?php $this->need('header.php'); ?>
+<?php $this->need('compoment/head.php');?>
 <style>
     #imga{
         height:auto;
@@ -20,19 +20,15 @@
 
  <bearsimple id="bearsimple-images"></bearsimple>
  <bearsimple id="bearsimple-images-readmode"></bearsimple>
-<?php if($this->options->Animate == "close" || $this->options->Animate == null): ?>
- <div class="pure-g" id="layout">
-    <?php else: ?>
-  <div class="pure-g animate__animated animate__<?php $this->options->Animate() ?>" id="layout">
-        <?php endif; ?>
+<div class="pure-g" id="layout">
             <div class="pure-u-1 pure-u-md-3-4">
                 <div class="content_container">
-               <?php if($this->options->Diy == "1"): ?><div class="ui <?php if($this->options->postType == "1"): ?>raised<?php endif; ?><?php if($this->options->postType == "2"): ?>stacked<?php endif; ?><?php if($this->options->postType == "3"): ?>tall stacked<?php endif; ?><?php if($this->options->postType == "4"): ?>piled<?php endif; ?> divided items segment" <?php if($this->options->postradius): ?>style="border-radius:<? $this->options->postradius(); ?>px"<?php endif; ?>><?php endif; ?>
+               <?php if(Bsoptions('Diy') == true): ?><div class="ui <?php if(Bsoptions('postType') == "1"): ?>raised<?php endif; ?><?php if(Bsoptions('postType') == "2"): ?>stacked<?php endif; ?><?php if(Bsoptions('postType') == "3"): ?>tall stacked<?php endif; ?><?php if(Bsoptions('postType') == "4"): ?>piled<?php endif; ?> segment" <?php if(Bsoptions('postradius')): ?>style="border-radius:<?php echo Bsoptions('postradius'); ?>px"<?php endif; ?>><?php endif; ?>
                     <h2><i class="book icon"></i> <?php $this->title() ?></h2>
-  <?php if(!empty($this->options->douban_note)): ?> 
+  <?php if(!empty(Bsoptions('douban_note'))): ?> 
     <div class="ui segment">
   <i class="red heart icon"></i>
-  <?php $this->options->douban_note();?>
+  <?php echo Bsoptions('douban_note');?>
 </div>
 <?php endif; ?>
 
@@ -130,7 +126,7 @@
 <?php endif; ?>
 
 </div></div>
-<?php if($this->options->Diy == "1"): ?></div><?php endif; ?>
+<?php if(Bsoptions('Diy') == true): ?></div><?php endif; ?>
 <script>
 $(document).ready(function(){
 
@@ -175,7 +171,7 @@ $("#loading").show();
                             $("#error1").fadeIn();
                         }
                     });
-                }
+                };
                 function pageList() {
                     page = Math.min(page, max);
                     page = Math.max(page, 1);
@@ -192,22 +188,23 @@ $("#loading").show();
                         }
                         else{
                             var dipage = document.getElementById("dipage").value;
-                            if(dipage < 1){
+                            switch(dipage){
+                            case dipage < 1 :
                                 page = 1;
-                            }
-                            else if(dipage > max){
+                            break;
+                            case dipage > max:
                                 page = max;
-                            }
-                            else{
+                            break;
+                            default:
                             page = dipage;
-                            }
-                        }
+                        };
+                        };
                         getData();
                     });
                     
                     
                     $("#page1").html($html);
-                }
+                };
                 function content(list,rating) {
                     var str = " ";
                     for(var i in list) {
@@ -217,7 +214,7 @@ if(rating == '1'){
                  else{
                      style = 'display:block';
                  }
-str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted mini button" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img class="lazyload" id="imga" data-src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
+str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted mini button" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img  id="imga" <?php echo lazyload();?>src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
 
 }
 
@@ -269,7 +266,7 @@ $("#loading2").show();
                             $("#error2").fadeIn();
                         }
                     });
-                }
+                };
                                 function pageList() {
                     page = Math.min(page, max);
                     page = Math.max(page, 1);
@@ -286,22 +283,23 @@ $("#loading2").show();
                         }
                         else{
                             var dipage = document.getElementById("dipage").value;
-                            if(dipage < 1){
+                            switch(dipage){
+                            case dipage < 1 :
                                 page = 1;
-                            }
-                            else if(dipage > max){
+                            break;
+                            case dipage > max:
                                 page = max;
-                            }
-                            else{
+                            break;
+                            default:
                             page = dipage;
-                            }
-                        }
+                        };
+                        };
                         getData();
                     });
                     
                     
                     $("#page2").html($html);
-                }
+                };
                 function content(list,rating) {
                     var str = " ";
                     for(var i in list) {
@@ -310,8 +308,8 @@ if(rating == '1'){
                  }
                  else{
                      style = 'display:block';
-                 }
-str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted button" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img class="lazyload" id="imga" data-src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
+                 };
+str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted button" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img  id="imga" <?php echo lazyload();?>src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
 }
 $('.finish_content2').html(str);
 $("#loading2").hide();
@@ -360,7 +358,7 @@ $("#loading3").show();
                             $("#error3").fadeIn();
                         }
                     });
-                }
+                };
                 function pageList() {
                     page = Math.min(page, max);
                     page = Math.max(page, 1);
@@ -377,22 +375,23 @@ $("#loading3").show();
                         }
                         else{
                             var dipage = document.getElementById("dipage").value;
-                            if(dipage < 1){
+                            switch(dipage){
+                            case dipage < 1 :
                                 page = 1;
-                            }
-                            else if(dipage > max){
+                            break;
+                            case dipage > max:
                                 page = max;
-                            }
-                            else{
+                            break;
+                            default:
                             page = dipage;
-                            }
-                        }
+                        };
+                        };
                         getData();
                     });
                     
                     
                     $("#page3").html($html);
-                }
+                };
                 function content(list,rating) {
                     var str = " ";
                     for(var i in list) {
@@ -401,15 +400,15 @@ if(rating == '1'){
                  }
                  else{
                      style = 'display:block';
-                 }
-str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted button" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img class="lazyload" id="imga" data-src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if($this->options->Link_blank == '2'):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
+                 };
+str += '<div class="ui fluid card" style="word-break:break-all;"><div class="blurring dimmable image"><div class="ui dimmer"><div class="content"><div class="center"><a class="ui inverted button" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>我也要看</a></div></div></div><img  id="imga" <?php echo lazyload();?>src="'+ list[i]['cover'].replace('http://','//') +'" referrerPolicy="no-referrer"></div><div class="content" style="text-align:center;"><a class="header" href="' + list[i]['url'] + '"<?php if(Bsoptions('Link_blank') == true):?> target="_blank"<?php endif; ?>>《' + list[i]['title'] + '》</a><div class="meta"><a>作者：' + list[i]['author'] + '</a></div><div class="ui star rating" data-rating="' + list[i]['rating'] + '" data-max-rating="5" style="pointer-events: none;' + style + '"></div></div></div>'
 }
 $('.finish_content3').html(str);
 $("#loading3").hide();
-                }
+                };
 
 
 });
 </script>
-<?php $this->need('sidebar.php'); ?>
-<?php $this->need('footer.php'); ?>
+<?php $this->need('compoment/sidebar.php'); ?>
+<?php $this->need('compoment/foot.php'); ?>

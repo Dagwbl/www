@@ -27,9 +27,9 @@ function nodeIdConvert(string|int $ignite_location ): int|string
         return $chars[1]*NUM_OF_FLOORS+$chars[2];
     }else{
         $n =intval($ignite_location/NUM_OF_ROOMS);
-        $m = $ignite_location%NUM_OF_ROOMS-2;
+        $m = $ignite_location%NUM_OF_ROOMS-3;
 //        print_r("f".$n."r".$m);
-        return "f".$n."r".$m;
+        return "f".$n."r".$m-1;
     }
 }
 

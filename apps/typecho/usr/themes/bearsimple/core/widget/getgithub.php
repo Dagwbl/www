@@ -11,7 +11,8 @@ header("HTTP/1.1 200 OK");
     date_default_timezone_set('PRC');
 error_reporting(0);
 function getData(){
-    $options = Helper::options();
+    $options = bsOptions::getInstance()::get_option( 'bearsimple' );
+    $optionss = Helper::options();
     //验证传值
 if ($_GET['type'] !== 'github')
 {
@@ -27,18 +28,16 @@ echo json_encode($result);
 exit;
 } 
  $removeChar = ["https://", "http://", "/"]; 
-    if (strpos($_SERVER['HTTP_REFERER'], str_replace($removeChar, "", $options->siteUrl)) !== false) {   
-$options = Typecho_Widget::widget('Widget_Options');
-$str = $options->github_accountid;
-    $status = json_decode(curl_get('https://api.github.com/users/'.$options->github_accountid.'/repos'),true);
-     $arr=array_column($status,'fork');
+    if (strpos($_SERVER['HTTP_REFERER'], str_replace($removeChar, "", $optionss->siteUrl)) !== false) {   
+$options = bsOptions::getInstance()::get_option( 'bearsimple' );
+$str = $options['github_accountid'];
+    $status = json_decode(curl_get('https://api.github.com/users/'.$options['github_accountid'].'/repos?per_page=99999'),true);
+     //$arr=array_column($status,'fork');
      $tot = array(
     'list' => array()
 );
-foreach($arr as $voo){
-    if($voo !== true){
+foreach($status as $voo){
   $tot['list'][] = array((string)$voo);
-    }
 }
 $status = count($tot['list']);
 $max = ceil($status / 6);
@@ -54,12 +53,11 @@ if(empty($_GET['page'])){
 else{
     $i = $_GET['page']; 
 }
-                $info = json_decode(curl_get('https://api.github.com/users/'.$options->github_accountid.'/repos?per_page=6&page='.$i),true);
+                $info = json_decode(curl_get('https://api.github.com/users/'.$options['github_accountid'].'/repos?per_page=6&page='.$i),true);
                 foreach ($info as $data) {
                     if($data["language"] == null){
                        $data["language"] = 'Other'; 
                     }
-                    if($data["fork"] == false){
                    	$result['list'][] = array(
 	 'url' => $data["html_url"],
 	 'name' => $data["name"],
@@ -69,7 +67,7 @@ else{
      'stars' => $data["stargazers_count"],
      'language' => $data["language"]
 	);
-                    }
+                    
 }
 }
 else{

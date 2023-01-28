@@ -2,9 +2,17 @@
 //阅读模式
 $(document).ready(function(){
         var is_mobi = navigator.userAgent.toLowerCase().match(/(ipod|ipad|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;
+
    $("#read").click(function(event){
        <?php if($this->hidden): ?>
-       toastr.warning('本文存在密码，验证文章密码后方可进入阅读模式');
+       $('body')
+							.toast({
+							    title:'抱歉~',
+							    class: 'warning',
+							    message: '本文存在密码，验证文章密码后方可进入阅读模式', 
+							    showIcon: 'flushed outline',
+							    showProgress: 'top',
+							});
        return false;
        <?php endif; ?>
        $("#header").hide();
@@ -12,7 +20,10 @@ $(document).ready(function(){
        $("#sidebar").hide();
        $("#comments__module").hide();
        $(".content_container").hide();
+       $('#read__mode').css({ position:"absolute" , top:+9999, left:+9999});
+$('#read__mode').css("position","static");
        $("#read__mode").fadeIn("1500");
+       $(".bs_body2").fadeIn("1500");
        $("body").addClass("readmode_body");
         $("#body_container").addClass("readmode_container");
         $("#body_container").css("background-color", "#F8F1E1");

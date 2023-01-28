@@ -18,7 +18,7 @@ require_once __TYPECHO_ROOT_DIR__ . '/var/Typecho/Common.php';
 \Typecho\Common::init();
 
 // config db
-$db = new \Typecho\Db('Mysqli', 'typecho_');
+$db = new \Typecho\Db('Pdo_Mysql', 'typecho_');
 $db->addServer(array (
   'host' => 'localhost',
   'port' => 3306,

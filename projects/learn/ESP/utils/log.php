@@ -14,7 +14,7 @@ class log
 
     //全局配置
     //最多多少字节数写一次文件
-    const MAX_LENGTH = '102400';
+    const MAX_LENGTH = '0'; // 102400
     //是否每次都写文件
     const WRITE_IMMEDIATE = false;
     //文件写日志级别
@@ -48,7 +48,7 @@ class log
     {
         if (self::$log != '') {
             $file_name = self::DIR . date("Y-m-d") . ".log";
-            file_put_contents($file_name, self::$log, FILE_APPEND);
+//            file_put_contents($file_name, self::$log, FILE_APPEND);
             self::$log = '';
         }
 
@@ -63,7 +63,7 @@ class log
             $prefix = date("Y-m-d H:i:s ||") . " [$level] ||";
 //            self::$log .= $prefix . var_export($data, true) ."||". $raw . PHP_EOL;
             self::$log .= $prefix . $data ."||". $raw . PHP_EOL;
-            self::insertDB(date("Y-m-d H:i:s"),$data, $level, $raw);
+            self::insertDB(date("Y-m-d H:i:s"), $data, $level, $raw);
             if (self::isWrite($immediate)) self::write();
         }
     }
@@ -73,11 +73,11 @@ class log
         return self::compareLevel($level) >= 0;
     }
 
-    private static function insertDB($time,$data, $level, $raw=null): void
+    private static function insertDB($time, $data, $level, $raw=null): void
     {
         global $_db;
         global $res;
-        $sql = "insert into esp.log (time, event, details,raw) VALUES ('$time','$level','$data','$raw')";
+        $sql = "insert into esp.log (time, event, details,raw,seq) VALUES ('$time','$level','$data','$raw','" . (EXPERIMENT_SEQ) . "')";
 //        echo $sql;
         $result = mysqli_query($_db,$sql);
         $res['log'] = "日志已插入数据库";
@@ -88,7 +88,8 @@ class log
 
     private static function isWrite($immediate): bool
     {
-        return self::WRITE_IMMEDIATE || $immediate || strlen(self::$log) > self::MAX_LENGTH;
+//        return self::WRITE_IMMEDIATE || $immediate || strlen(self::$log) > self::MAX_LENGTH;
+        return self::WRITE_IMMEDIATE || $immediate;
     }
 
     private static function compareLevel($level)

@@ -1,10 +1,9 @@
 <?php
 header("HTTP/1.1 200 OK");
 header("Content-Type: text/xml");
-
+$options = Helper::options();
 $db = Typecho_Db::get();
-$options = Typecho_Widget::widget('Widget_Options');
-$limit = Helper::options()->SiteMap;
+$limit = bsOptions::getInstance()::get_option( 'bearsimple' )['SiteMap'];
 $pages = $db->fetchAll(
     $db->select()->from('table.contents')
         ->where('table.contents.status = ?', 'publish')

@@ -6,17 +6,13 @@
     */
 ?>
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
-<?php $this->need('header.php'); ?>
+<?php $this->need('compoment/head.php');?>
  <bearsimple id="bearsimple-images"></bearsimple>
  <bearsimple id="bearsimple-images-readmode"></bearsimple>
-<?php if($this->options->Animate == "close" || $this->options->Animate == null): ?>
- <div class="pure-g" id="layout">
-    <?php else: ?>
-  <div class="pure-g animate__animated animate__<?php $this->options->Animate() ?>" id="layout">
-        <?php endif; ?>
+<div class="pure-g" id="layout">
             <div class="pure-u-1 pure-u-md-3-4">
                 <div class="content_container">
-               <?php if($this->options->Diy == "1"): ?><div class="ui <?php if($this->options->postType == "1"): ?>raised<?php endif; ?><?php if($this->options->postType == "2"): ?>stacked<?php endif; ?><?php if($this->options->postType == "3"): ?>tall stacked<?php endif; ?><?php if($this->options->postType == "4"): ?>piled<?php endif; ?> divided items segment" <?php if($this->options->postradius): ?>style="border-radius:<? $this->options->postradius(); ?>px"<?php endif; ?>><?php endif; ?>
+               <?php if(Bsoptions('Diy') == true): ?><div class="ui <?php if(Bsoptions('postType') == "1"): ?>raised<?php endif; ?><?php if(Bsoptions('postType') == "2"): ?>stacked<?php endif; ?><?php if(Bsoptions('postType') == "3"): ?>tall stacked<?php endif; ?><?php if(Bsoptions('postType') == "4"): ?>piled<?php endif; ?> segment" <?php if(Bsoptions('postradius')): ?>style="border-radius:<?php echo Bsoptions('postradius'); ?>px"<?php endif; ?>><?php endif; ?>
                     <h2><i class="tags icon"></i> <?php $this->title() ?></h2><br>
 
 <?php Typecho_Widget::widget('Widget_Metas_Tag_Cloud')->to($tags); ?>
@@ -43,7 +39,6 @@
 
 </div></div>
 
-<?php if($this->options->Diy == "1"): ?></div><?php endif; ?>
-<?php $this->need('sidebar.php'); ?>
-
-<?php $this->need('footer.php'); ?>
+<?php if(Bsoptions('Diy') == true): ?></div><?php endif; ?>
+<?php $this->need('compoment/sidebar.php'); ?>
+<?php $this->need('compoment/foot.php'); ?>

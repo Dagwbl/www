@@ -3,27 +3,27 @@
  * 简洁清新淡雅，让写作回归内容本身
  * @package BearSimple 
  * @author WhiteBear
- * @version 1.9.9
- * @link https://www.bearnotion.eu/
+ * @version v2.1.1-release
+ * @link https://www.bearnotion.org/
  * 
  */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
- $this->need('header.php');
+ $this->need('compoment/head.php');
 
   ?>
 
-<?php if($this->options->Diy == '1') :?>
+<?php if(Bsoptions('Diy') == true) :?>
 
 <?php $this->need('pages/diy-index.php'); ?>
 
   <?php endif; ?>
 
-<?php if($this->options->Diy == '2' || empty($this->options->Diy)) :?>
+<?php if(Bsoptions('Diy') == false || empty(Bsoptions('Diy'))) :?>
 
 <?php $this->need('pages/index-z.php'); ?>
 
   <?php endif; ?>
 
-<?php $this->need('sidebar.php'); ?>
-<?php $this->need('footer.php'); ?>
+<?php $this->need('compoment/sidebar.php'); ?>
+<?php $this->need('compoment/foot.php'); ?>

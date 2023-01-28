@@ -6,250 +6,250 @@
   <i class="language icon"></i>
   <span class="text">选择语言</span>
   <div class="menu" style="overflow-y:scroll;height:150px;">
-  <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('zh',$this->options->WorldLanguage)):?>
+  <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('zh',Bsoptions('WorldLanguage'))):?>
        <div onclick="javascript:closeTranslate();" class="item">简体中文</div>
        <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('zh-TW',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('zh-TW',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|zh-TW');return false;" class="item">繁体中文</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('af',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('af',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|af');return false;" class="item">Afrikaans</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sq',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sq',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sq');return false;" class="item">Shqip</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ar',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ar',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ar');return false;" class="item">العربية</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('hy',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('hy',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|hy');return false;" class="item"> Հայերեն</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('az',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('az',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|az');return false;" class="item">Azərbaycan dili</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('eu',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('eu',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|eu');return false;" class="item">Euskara</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('be',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('be',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|be');return false;" class="item">Беларуская мова</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('bg',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('bg',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|bg');return false;" class="item">Български</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ca',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ca',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ca');return false;" class="item">Català</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('hr',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('hr',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|hr');return false;" class="item">Hrvatski</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('cs',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('cs',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|cs');return false;" class="item">Čeština</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('da',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('da',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|da');return false;" class="item">Dansk</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('nl',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('nl',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|nl');return false;" class="item">Nederlands</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('en',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('en',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|en');return false;" class="item">English</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('et',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('et',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|et');return false;" class="item">Eesti</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('tl',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('tl',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|tl');return false;" class="item">Filipino</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('fi',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('fi',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|fi');return false;" class="item">Suomi</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('fr',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('fr',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|fr');return false;" class="item">Français</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('gl',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('gl',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|gl');return false;" class="item">Galego</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ka',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ka',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ka');return false;" class="item">ქართული</div>
 <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('de',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('de',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|de');return false;" class="item">Deutsch</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('el',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('el',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|el');return false;" class="item">Ελληνικά</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ht',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ht',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ht');return false;" class="item">Kreyol ayisyen</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('iw',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('iw',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|iw');return false;" class="item">עִבְרִית</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('hi',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('hi',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|hi');return false;" class="item">हिन्दी</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('hu',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('hu',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|hu');return false;" class="item">Magyar</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('is',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('is',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|is');return false;" class="item">Íslenska</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('id',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('id',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|id');return false;" class="item">Bahasa Indonesia</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ga',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ga',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ga');return false;" class="item">Gaelige</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('it',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('it',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|it');return false;" class="item">taliano</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ja',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ja',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ja');return false;" class="item">日本語</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ko',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ko',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ko');return false;" class="item">한국어</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('lv',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('lv',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|lv');return false;" class="item">Latviešu valoda</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('lt',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('lt',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|lt');return false;" class="item">Lietuvių kalba</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('mk',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('mk',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|mk');return false;" class="item">Македонски јазик</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ms',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ms',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ms');return false;" class="item">Bahasa Melayu</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('mt',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('mt',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|mt');return false;" class="item">Maltese</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('no',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('no',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|no');return false;" class="item">Norsk bokmål</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('fa',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('fa',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|fa');return false;" class="item">فارسی</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('pl',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('pl',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|pl');return false;" class="item">Polski</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('pt',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('pt',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|pt');return false;" class="item">Português</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ro',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ro',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ro');return false;" class="item">Română</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ru',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ru',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ru');return false;" class="item">Русский</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sr',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sr',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sr');return false;" class="item">Српски језик</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sk',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sk',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sk');return false;" class="item">Slovenčina</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sl',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sl',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sl');return false;" class="item">Slovenščina</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('es',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('es',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|es');return false;" class="item">Español</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sw',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sw',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sw');return false;" class="item">Kiswahili</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('sv',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('sv',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|sv');return false;" class="item">Svenska</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('th',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('th',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|th');return false;" class="item">ไทย</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('tr',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('tr',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|tr');return false;" class="item">Türkçe</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('uk',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('uk',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|uk');return false;" class="item">Українська</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ur',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ur',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ur');return false;" class="item">اردو</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('vi',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('vi',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|vi');return false;" class="item">Tiếng Việt</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('cy',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('cy',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|cy');return false;" class="item">Cymraeg</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('yi',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('yi',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|yi');return false;" class="item">יידיש</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('bn',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('bn',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|bn');return false;" class="item">বাংলা</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('bs',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('bs',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|bs');return false;" class="item">Bosanski</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ceb',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ceb',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ceb');return false;" class="item">Cebuano</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('eo',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('eo',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|eo');return false;" class="item">Esperanto</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('gu',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('gu',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|gu');return false;" class="item">ગુજરાતી</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ha',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ha',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ha');return false;" class="item">Harshen Hausa</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('hmn',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('hmn',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|hmn');return false;" class="item">Hmong</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ig',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ig',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ig');return false;" class="item">Igbo</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('jw',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('jw',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|jw');return false;" class="item">Basa Jawa</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('kn',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('kn',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|kn');return false;" class="item">ಕನ್ನಡ</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('km',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('km',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|km');return false;" class="item">ភាសាខ្មែរ</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('lo',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('lo',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|lo');return false;" class="item">ພາສາລາວ</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('la',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('la',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|la');return false;" class="item">Latin</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('mi',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('mi',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|mi');return false;" class="item">Te Reo Māori</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('mr',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('mr',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|mr');return false;" class="item">मराठी</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('mn',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('mn',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|mn');return false;" class="item">Монгол</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ne',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ne',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ne');return false;" class="item">नेपाली</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('pa',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('pa',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|pa');return false;" class="item">ਪੰਜਾਬੀ</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('so',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('so',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|so');return false;" class="item">Afsoomaali</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('ta',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('ta',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|ta');return false;" class="item">தமிழ்</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('te',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('te',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|te');return false;" class="item">తెలుగు</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('yo',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('yo',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|yo');return false;" class="item">Yorùbá</div>
     <?php endif; ?> 
-       <?php if(!empty($this->options->WorldLanguage[0]) && @in_array('zu',$this->options->WorldLanguage)):?>
+       <?php if(!empty(Bsoptions('WorldLanguage')[0]) && @in_array('zu',Bsoptions('WorldLanguage'))):?>
     <div onclick="close_all_language();doGTranslate('auto|zu');return false;" class="item">Zulu</div>
     <?php endif; ?> 
-    <?php if(empty($this->options->WorldLanguage)):?>
+    <?php if(empty(Bsoptions('WorldLanguage'))):?>
     <div onclick="toastr.warning('暂未找到可以翻译的语言，请稍后再试~~~');return false;" class="item">暂未找到可选语言</div>
     <?php endif; ?> 
   </div>

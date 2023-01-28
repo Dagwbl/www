@@ -3,36 +3,38 @@
 <link rel="stylesheet" href="//deliver.application.pub/npm/@fancyapps/ui@4.0/dist/fancybox.css"
     />
 <?php if($this->user->hasLogin()): ?>
-<?php if($this->options->Emoji == '1') :?>
-  <link rel="stylesheet" href="<?php AssetsDir();?>assets/owo/OwO.min.css">
+<?php if(Bsoptions('Emoji') == true) :?>
+  <link href="<?php AssetsDir();?>assets/vendors/bs-emoji/bs-emoji.css" rel="stylesheet" type="text/css">
   <?php endif; ?>
 <div id="comments" class="ui comments" style="display:none;">
    
     	<form method="post" action="<?php $this->commentUrl() ?>" id="commentform" role="form" class="ui reply form">
       <div class="field">
-            <?php if($this->options->Emoji == '1') :?>
-<div class="OwO" style="margin-bottom:-30px;position:relative;"></div>
-<?php endif ; ?>
+
 <div class="ui mini basic icon buttons" style="float:right">
   <div class="ui button" id="insertimg"><i class="image icon" data-content="插入图片短代码"></i></div>
   <div class="ui button" id="insertimgs"><i class="images icon" data-content="插入相册短代码"></i></div>
   <div class="ui button" id="insertmark"><i class="bookmark icon" data-content="插入文字标记短代码"></i></div>
     <div class="ui button" id="insertruby"><i class="language icon" data-content="插入文字注音短代码"></i></div>
 </div>
-                <textarea rows="5" cols="30" name="text" id="textarea" placeholder="写一写你的最近动态~" class="textarea <?php if($this->options->Emoji == '1') :?>OwO-textarea<?php endif ; ?>" required ><?php $this->remember('text'); ?></textarea>
+                <textarea rows="5" cols="30" name="text" id="textarea" placeholder="写一写你的最近动态~"<?php if(Bsoptions('Emoji') == true) :?> class="emotion"<?php endif; ?> required ><?php $this->remember('textarea'); ?></textarea>
             </div>
-    	
+<?php if(Bsoptions('Emoji') == true) :?>
+    <div class="circular ui icon button" id="facecross">
+
+  <i class="smile beam outline icon"></i>
+ </div>
+ <div id="emoemo" style="margin-top:-40px;margin-bottom:10px"></div>
+ <?php endif; ?>
                 <button type="submit" class="ui blue mini labeled submit icon  button" style="float:right"><i class="location arrow icon"></i><?php _e('发表动态'); ?></button>
            
     	</form>
     	</div>
-    
-    	<?php if($this->options->Emoji == '1') :?>
-    	<script src="<?php AssetsDir();?>assets/owo/OwO.min.js"></script>
-    	<?php endif; ?>
+
     	 <?php endif; ?>
 <br>
 <?php function threadedComments($comments, $options) {
+    $bsoptions = bsOptions::getInstance()::get_option( 'bearsimple' );
  ?>
 <div class="bs-timeline-block" id="<?php $comments->theId(); ?>">
 			<div class="bs-timeline-img">
@@ -41,17 +43,18 @@
 			<div class="bs-timeline-content break">
 			    <?php $comments->date('Y-m-d H:i'); ?>
 			    <hr class="crosshr">
-       	<p> <?php echo ParseCross(reEmo($comments->content,'comment')); ?>	</p>
-       	<?php if(Helper::options()->Comment_like == "2" || Helper::options()->Comment_useragent == "2"):?>
+       	<p> 
+       	<?php echo ParseCross(reEmo($comments->content,'comment')); ?>	</p>
+       	<?php if($bsoptions['Comment_like'] == true || $bsoptions['Comment_useragent'] == true):?>
       <hr class="crosshr">
    <?php endif; ?>
-			    <?php if(Helper::options()->Comment_like == "2"): ?>
+			    <?php if($bsoptions['Comment_like'] == true): ?>
 	    	 <?php $agree = $options->hidden?array('agree' => 0, 'recording' => true):agreeNumforcomment($comments->coid);?>
         <div style="float:left">
           <i id="commentlike" class="like thumbs up red link icon" data-coid="<?php echo $comments->coid; ?>"></i><span class="agreenumcomment<?php echo $comments->coid; ?>"><?php echo $agree['agree']; ?></span>
         </div>
         <?php endif; ?>
-        <?php if(Helper::options()->Comment_useragent == "2"): ?>
+        <?php if($bsoptions['Comment_useragent'] == true): ?>
          <div style="float:right"> <?php BearsimpleUserAgent::render($comments->agent); ?></div>
          <?php endif; ?>
     	</div>
@@ -66,7 +69,7 @@
                 <center><h2>暂无动态</h2></center>
             </article>
      <?php else:?>
-         <section id="bs-timeline" class="bs-container">
+         <section id="bs-timeline" class="bs-container nosearch">
      <?php
       ob_start();
    $comments->listComments();
@@ -77,13 +80,14 @@
    echo $comments_content;
    ?>
 </section>
+
 <?php endif; ?>
     <?php
       ob_start(); 
       $comments->pageNav('&laquo;','&raquo;', 1, '');
       $content = ob_get_contents();
       ob_end_clean();
-      if($this->options->pagination_style == '2'){
+      if(Bsoptions('pagination_style') == '2'){
       $content = preg_replace("/<ol class=\"(.*?)\">/sm", '<nav class="page-navigator">', $content);
       $content = preg_replace("/<li><span>(.*?)<\/span><\/li>/sm", '<span class="page-number">...</span>', $content);
       $content = preg_replace("/<li class=\"current\"><a href=\"(.*?)\">(.*?)<\/a><\/li>/sm", '<a class="page-number current" href="$1">$2</a>', $content);
@@ -98,7 +102,7 @@
       ///--->
       $content = preg_replace("/<\/ol>/sm", '</nav>', $content);
       }
-      if(empty($this->options->pagination_style) || $this->options->pagination_style == '1'){
+      if(empty(Bsoptions('pagination_style')) || Bsoptions('pagination_style') == '1'){
       $content = preg_replace("/<ol class=\"(.*?)\">/sm", '<div class="ui circular labels" style="margin-top:30px"><div style="text-align:center">', $content);
       $content = preg_replace("/<li><span>(.*?)<\/span><\/li>/sm", '<a class="ui large label">...</a>', $content);
       $content = preg_replace("/<li class=\"current\"><a href=\"(.*?)\">(.*?)<\/a><\/li>/sm", '<a class="ui blue large label" href="$1">$2</a>', $content);
@@ -115,8 +119,6 @@
       }
       echo $content;
      ?>
-     <?php if($this->options->Compress == '1') :?><nocompress><?php endif; ?>
-<?php if($this->options->Compress == '1') :?><nocompress><?php endif; ?>
 <script>
 $.getScript('//deliver.application.pub/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js',function(){
   Fancybox.bind('[data-fancybox="single"]', {
@@ -126,33 +128,32 @@ $.getScript('//deliver.application.pub/npm/@fancyapps/ui@4.0/dist/fancybox.umd.j
 });
 });
 $(document).ready(function(){
-   
 $('#insertimg').on('click',function(){
 insert('[bsimg]图片直链，带http(s)://[/bsimg]\n');
-})
+});
 $('#insertmark').on('click',function(){
 insert('[bsmark]要标注的文字[/bsmark]\n');
-})
+});
 $('#insertruby').on('click',function(){
 insert('[bsruby]要注音的文字[/bsruby]\n');
-})
+});
 $('#insertimgs').on('click',function(){
-insert('[bsgallery title="相册名"]\n[bsimg title="图片标题1" subtitle="图片子标题1"]图片1直链[/bsimg]\n[bsimg title="图片标题2" subtitle="图片子标题2"]图片2直链[/bsimg]\n[bsimg title="图片标题3" subtitle="图片子标题3"]图片3直链[/bsimg]\n[/bsgallery]\n');
-})
+insert('[bsgallery title="相册名"]\n[bsimg title="图片标题1"]图片1直链[/bsimg]\n[bsimg title="图片标题2"]图片2直链[/bsimg]\n[bsimg title="图片标题3"]图片3直链[/bsimg]\n[/bsgallery]\n');
+});
 function insert(tag) {
 					var myField;
 					if (document.getElementById('textarea') && document.getElementById('textarea').type == 'textarea') {
 						myField = document.getElementById('textarea');
 					} else {
 						return false;
-					}
+					};
 					if (document.selection) {
 						myField.focus();
 						sel = document.selection.createRange();
 						sel.text = tag;
 						myField.focus();
-					}
-					else if (myField.selectionStart || myField.selectionStart == '0') {
+					};
+					if (myField.selectionStart || myField.selectionStart == '0') {
 						var startPos = myField.selectionStart;
 						var endPos = myField.selectionEnd;
 						var cursorPos = startPos;
@@ -166,9 +167,8 @@ function insert(tag) {
 					} else {
 						myField.value += tag;
 						myField.focus();
-					}
-				}
+					};
+				};
 });
 </script>
-<?php if($this->options->Compress == '1') :?></nocompress><?php endif; ?>
-<?php if($this->options->Compress == '1') :?></nocompress><?php endif; ?>
+<?php if(Bsoptions('Compress') == true) :?></nocompress><?php endif; ?>

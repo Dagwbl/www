@@ -1,5 +1,6 @@
 <?php
 //BearSimple For Typecho
+header("HTTP/1.1 200 OK");
     header("Access-Control-Allow-Origin: *");
     date_default_timezone_set('PRC');
     function get_file_suffix($file_name, $allow_type = array())
@@ -22,19 +23,26 @@
     }
   }
 }
-    \Widget\User::alloc()->to($user);
+
+
+
+
+    Typecho_Widget::widget('Widget_User')->to($user);
     if ($user->hasLogin()) {
-if ($_GET["url"] == 'post' || $_GET["url"] == 'page')
+        if ($_GET["url"] == 'post' || $_GET["url"] == 'page')
 {
 if ($_GET["cid"]) {
-        \Widget\Contents\Attachment\Related::alloc(['parentId' => $_GET["cid"]])->to($attachment);
+     Typecho_Widget::widget('Widget_Contents_Attachment_Related', 'parentId=' . $_GET["cid"])->to($attachment);
     } else {
-        \Widget\Contents\Attachment\Unattached::alloc()->to($attachment);
+        Typecho_Widget::widget('Widget_Contents_Attachment_Unattached')->to($attachment);
     }
     $result = array(
     'code' => '1',
     'list' => array()
 );
+$imgif="jpg,gif,png,jpeg";
+$allow=explode(",",$imgif);
+
 while ($attachment->next()){
     if (get_file_suffix($attachment->attachment->url,$allow)){
 $attachtype = 'img';
